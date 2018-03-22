@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class UILayerManager : MonoBehaviour {
+public class UILayerManager : SingletonMono<UILayerManager>
+{
     public Dictionary<UILayer, GameObject> UILayerObjDic { get; private set; }
 
     public void Init()

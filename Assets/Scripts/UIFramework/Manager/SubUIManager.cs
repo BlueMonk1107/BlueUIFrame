@@ -70,9 +70,10 @@ public class SubUIManager : MonoBehaviour, IUIManager
 
     public bool Back()
     {
-        if (uiStack.Count > 0)
+        if (uiStack.Count > 1)
         {
             uiStack.Pop().Hide();
+            uiStack.Peek().Show();
             return true;
         }
         else

@@ -6,12 +6,8 @@ using System.Linq;
 
 public class UIManager : SingletonMono<UIManager>, IUIManager
 {
-    private MsgManager msgManager;
-    private UILayerManager layerManager;
     private Dictionary<UILayer, IUIManager> subUiManagers;
 
-    public MsgManager GetMsgManager { get { return msgManager; } }
-    public UILayerManager GetUILayerManager { get { return layerManager; } }
     private void Awake()
     {
         InitSystem();
@@ -19,11 +15,15 @@ public class UIManager : SingletonMono<UIManager>, IUIManager
 
     private void InitSystem()
     {
-        msgManager = new MsgManager();
         subUiManagers = new Dictionary<UILayer, IUIManager>();
-        layerManager = AddManager<UILayerManager>(gameObject);
+
+        AddManager<MsgManager>(gameObject);
+        
+        UILayerManager layerManager = AddManager<UILayerManager>(gameObject);
         layerManager.Init();
         SpawnSubUIManager(layerManager);
+
+        AddManager<UIEffetManager>(gameObject).Init();
     }
 
     private T AddManager<T>(GameObject obj) where T : MonoBehaviour

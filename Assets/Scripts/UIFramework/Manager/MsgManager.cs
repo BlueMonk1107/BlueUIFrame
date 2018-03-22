@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class MsgManager
+public class MsgManager : SingletonMono<MsgManager>
 {
     private Dictionary<string, Action<IPara>> actionDic; 
 
-    public MsgManager()
+    public void Init()
     {
         actionDic = new Dictionary<string, Action<IPara>>();
     }
