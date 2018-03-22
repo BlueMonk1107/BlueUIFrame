@@ -5,12 +5,17 @@ using UnityEngine;
 public abstract class AUIBase : MonoBehaviour {
 
     public EUiId ID { get; private set; }
+    public UILayer layer { get; private set; }
 
-    public abstract void Add(AUIBase ui);
-    public abstract void Remove(AUIBase ui);
+    public UIStateEnum uiState { get; protected set; }
 
-    protected void SetId(EUiId id)
+    public bool IsMainUI { get; private set; }
+
+    protected void InitUI(EUiId id, UILayer uiLayer,bool isMainUI = false)
     {
         ID = id;
+        layer = uiLayer;
+        uiState = UIStateEnum.INIT;
+        IsMainUI = isMainUI;
     }
 }

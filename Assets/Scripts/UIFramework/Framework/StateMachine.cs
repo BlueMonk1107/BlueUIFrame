@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 public sealed class StateMachine<T>
 {
-
     private readonly Dictionary<T, IUIState> stateDic;
     public T CurrentUiId { get; private set; }
 
@@ -17,7 +16,10 @@ public sealed class StateMachine<T>
     
     public void AddUI(T id, IUIState stateMethod)
     {
-        stateDic[id] = stateMethod;
+        if (!stateDic.ContainsKey(id) || stateDic[id] == null)
+        {
+            stateDic[id] = stateMethod;
+        }
     }
 
     public void Remove(T id)
@@ -30,21 +32,21 @@ public sealed class StateMachine<T>
     
     public void ChangeUI(T id)
     {
-        //if (CurrentUiId != null)
-        //{
-        //    stateDic[CurrentUiId].Hide();
-        //}
+        if (CurrentUiId != null)
+        {
+            if (CurrentUiId.Equals(id))
+            {
+                return;
+            }
+            stateDic[CurrentUiId].Hide();
+        }
 
-        //IUIFrame ui = stateDic[id];
-        //switch (ui.uiState)
-        //{
-        //    case UIStateEnum.INIT:
-        //        ui.Init();
-        //        break;
-        //    case UIStateEnum.HIDE:
-        //        ui.Show();
-        //        break;
-        //}
+        IUIState ui = stateDic[id];
+        if (((AUIBase)ui).uiState == UIStateEnum.INIT)
+        {
+            ui.Init();
+        }
+        ui.Show();
     }
 }
 

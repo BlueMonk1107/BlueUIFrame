@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IUIManager {
+public interface IUIManager
+{
     void ShowUI(EUiId id,IPara para);
-    void HideUI(EUiId id,IPara para);
-    void Back();
+    void HideUI(UILayer layer);
+    bool Back();
 }

@@ -2,9 +2,9 @@
 using System.Reflection;
 using UnityEngine;
 
-public class RootUI : AUIBase, IUIState
+public class BasicUI : AUIBase, IUIState
 {
-    public UIStateEnum uiState { get; private set; }
+    private IPara paraCache;
 
     public void Init(IPara para)
     {
@@ -14,10 +14,18 @@ public class RootUI : AUIBase, IUIState
 
     private void CheckRepetition()
     {
-        int count = FindObjectsOfType<RootUI>().Length;
+        AUIBase[] uiList = FindObjectsOfType<AUIBase>();
+        int count = 0;
+        foreach (AUIBase item in uiList)
+        {
+            if (item.IsMainUI)
+            {
+                count++;
+            }
+        }
         if (count > 1)
         {
-            Debug.LogError("RootUI为根节点UI，只能存在一个，目前存在："+ count + "个");
+            Debug.LogError("主界面UI只能存在一个，目前存在：" + count + "个");
         }
     }
 
@@ -34,15 +42,5 @@ public class RootUI : AUIBase, IUIState
     public void Complete(IPara para)
     {
 
-    }
-
-    public override void Add(AUIBase ui)
-    {
-       
-    }
-
-    public override void Remove(AUIBase ui)
-    {
-        Debug.Log("根节点UI无法移除");
     }
 }

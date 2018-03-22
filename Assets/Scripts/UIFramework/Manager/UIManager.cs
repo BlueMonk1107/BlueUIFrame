@@ -1,14 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class UIManager : SingletonMono<UIManager>, IUIManager
 {
-    private StateMachine<EUiId> stateMachine;
     private MsgManager msgManager;
-    private List<AUIBase> childList;//放到池对象中管理 
+    private UILayerManager layerManager;
+    private Dictionary<UILayer, IUIManager> subUiManagers;
 
     public MsgManager GetMsgManager { get { return msgManager; } }
+    public UILayerManager GetUILayerManager { get { return layerManager; } }
     private void Awake()
     {
         InitSystem();
@@ -16,25 +19,86 @@ public class UIManager : SingletonMono<UIManager>, IUIManager
 
     private void InitSystem()
     {
-        stateMachine = new StateMachine<EUiId>();
         msgManager = new MsgManager();
-        childList = new List<AUIBase>();
+        subUiManagers = new Dictionary<UILayer, IUIManager>();
+        layerManager = AddManager<UILayerManager>(gameObject);
+        layerManager.Init();
+        SpawnSubUIManager(layerManager);
     }
-    
+
+    private T AddManager<T>(GameObject obj) where T : MonoBehaviour
+    {
+        if (GetComponent<T>() == null)
+        {
+            return obj.AddComponent<T>();
+        }
+        else
+        {
+            return obj.GetComponent<T>();
+        }
+    }
+
+    private void SpawnSubUIManager(UILayerManager layerMgr)
+    {
+        GameObject layerParent = null;
+        SubUIManager subUiManager = null;
+        foreach (UILayer item in Enum.GetValues(typeof(UILayer)))
+        {
+            layerParent = layerMgr.UILayerObjDic[item];
+            subUiManager = AddManager<SubUIManager>(layerParent);
+            subUiManager.Init(item);
+            subUiManagers[item] = subUiManager;
+        }
+    }
+
     public void ShowUI(EUiId id, IPara para)
     {
-        IUIState ui = null;
-        stateMachine.AddUI(id, ui);
+        Transform uiTrans = SpawnUI(id);
+        if (uiTrans != null)
+        {
+            AUIBase uiBase = uiTrans.GetComponent<AUIBase>();
+            UILayer showLayer = uiBase.layer;
+            subUiManagers[showLayer].ShowUI(id, para);
+            HideUI(showLayer);
+        }
+        else
+        {
+            Debug.LogError("UI对象生成失败");
+        }
     }
 
-    public void HideUI(EUiId id, IPara para)
+    public void HideUI(UILayer layer)
     {
-        throw new System.NotImplementedException();
+        foreach (KeyValuePair<UILayer, IUIManager> pair in subUiManagers)
+        {
+            pair.Value.HideUI(layer);
+        }
     }
 
-    public void Back()
+    private Transform SpawnUI(EUiId id)
     {
-        throw new System.NotImplementedException();
+        string path = UIPathManager.GetPath(id);
+        if (!string.IsNullOrEmpty(path))
+        {
+            return Instantiate(Resources.Load(path), transform) as Transform;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public bool Back()
+    {
+        Array layers = Enum.GetValues(typeof(UILayer));
+        Array.Reverse(layers);
+        foreach (UILayer item in layers)
+        {
+            if (subUiManagers[item].Back())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
- 

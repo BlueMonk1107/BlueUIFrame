@@ -4,9 +4,8 @@ using UnityEngine;
 
 public interface IUIState
 {
-    UIStateEnum uiState { get;}
-    void Init(IPara para);
-    void Show(IPara para);
-    void Hide(IPara para);
-    void Complete(IPara para);
+    void Init(IPara para = null);
+    void Show(IPara para = null);
+    void Hide(IPara para = null);
+    void Complete(IPara para = null);
 }
