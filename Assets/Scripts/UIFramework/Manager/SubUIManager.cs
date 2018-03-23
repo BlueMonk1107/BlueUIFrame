@@ -6,14 +6,16 @@ public class SubUIManager : MonoBehaviour, IUIManager
 {
     private UILayer managerLayer;
     private StateMachine<EUiId> stateMachine;
-    private Stack<IUIState> uiStack;
+    private Stack<EUiId> uiStack;
     private Dictionary<EUiId, Transform> objectPool; 
 
-    public void Init(UILayer uiLayer)
+    public void Init(UILayer uiLayer, StateMachine<EUiId> machine)
     {
         managerLayer = uiLayer;
-        stateMachine = new StateMachine<EUiId>();
-        uiStack = new Stack<IUIState>();
+       
+        uiStack = new Stack<EUiId>();
+
+        stateMachine = machine;
     }
 
     public void ShowUI(EUiId id, IPara para)
@@ -24,20 +26,21 @@ public class SubUIManager : MonoBehaviour, IUIManager
             IUIState ui = uiTrans.GetComponent<IUIState>();
             if (ui != null)
             {
-                stateMachine.AddUI(id, ui);
+                AUIEffect uIEffect = uiTrans.GetComponent<AUIEffect>();
+                stateMachine.AddUI(id, ui, uIEffect);
                 objectPool[id] = uiTrans;
-                uiStack.Push(ui);
+                uiStack.Push(id);
                 stateMachine.ChangeUI(id);
             }
             else
             {
-                Debug.LogError("UI脚本未继承IUIState");
+                Debug.LogError("the prefab cannot find IUIState");
                 return;
             }
         }
         else
         {
-            Debug.LogError("UI对象生成失败");
+            Debug.LogError("UI Object Spawan False");
         }
     }
 
@@ -47,7 +50,7 @@ public class SubUIManager : MonoBehaviour, IUIManager
             return;
         if (uiStack.Count > 0)
         {
-            uiStack.Pop().Hide();
+            stateMachine.Hide(uiStack.Pop());
         }
     }
 
@@ -72,8 +75,8 @@ public class SubUIManager : MonoBehaviour, IUIManager
     {
         if (uiStack.Count > 1)
         {
-            uiStack.Pop().Hide();
-            uiStack.Peek().Show();
+            stateMachine.Hide(uiStack.Pop());
+            stateMachine.Show(uiStack.Peek());
             return true;
         }
         else

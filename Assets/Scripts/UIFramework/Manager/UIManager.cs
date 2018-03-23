@@ -7,7 +7,6 @@ using System.Linq;
 public class UIManager : SingletonMono<UIManager>, IUIManager
 {
     private Dictionary<UILayer, IUIManager> subUiManagers;
-
     private void Awake()
     {
         InitSystem();
@@ -15,15 +14,14 @@ public class UIManager : SingletonMono<UIManager>, IUIManager
 
     private void InitSystem()
     {
+        StateMachine<EUiId> stateMachine = new StateMachine<EUiId>();
         subUiManagers = new Dictionary<UILayer, IUIManager>();
-
+        //添加消息系统
         AddManager<MsgManager>(gameObject);
-        
+        //添加层级系统
         UILayerManager layerManager = AddManager<UILayerManager>(gameObject);
         layerManager.Init();
-        SpawnSubUIManager(layerManager);
-
-        AddManager<UIEffetManager>(gameObject).Init();
+        SpawnSubUIManager(layerManager,stateMachine);
     }
 
     private T AddManager<T>(GameObject obj) where T : MonoBehaviour
@@ -38,7 +36,7 @@ public class UIManager : SingletonMono<UIManager>, IUIManager
         }
     }
 
-    private void SpawnSubUIManager(UILayerManager layerMgr)
+    private void SpawnSubUIManager(UILayerManager layerMgr, StateMachine<EUiId> stateMachine)
     {
         GameObject layerParent = null;
         SubUIManager subUiManager = null;
@@ -46,7 +44,7 @@ public class UIManager : SingletonMono<UIManager>, IUIManager
         {
             layerParent = layerMgr.UILayerObjDic[item];
             subUiManager = AddManager<SubUIManager>(layerParent);
-            subUiManager.Init(item);
+            subUiManager.Init(item, stateMachine);
             subUiManagers[item] = subUiManager;
         }
     }

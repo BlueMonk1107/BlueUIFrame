@@ -31,28 +31,23 @@ public abstract class AUIEffect : MonoBehaviour
     }
     protected float offset;
 
-    protected Action<IPara> OnEnterComplete;
-    protected Action<IPara> OnExitComplete;
+    private Action<IPara> onEnterComplete;
+    private Action<IPara> OnExitComplete;
     public UIShowState uiShowState = UIShowState.Default;
 
-    public virtual void Init()
+    public abstract void Enter(IPara para = null);
+
+    public abstract void Exit(IPara para = null);
+
+    public virtual void AddEnterListener(Action<IPara> action)
     {
-        AddMsgListener();
+        onEnterComplete = action;
     }
 
-    protected virtual void AddMsgListener()
+    public virtual void AddExitListener(Action<IPara> action)
     {
-        AUIBase uiBase = GetComponent<AUIBase>();
-        if (uiBase != null)
-        {
-            MsgManager.Instance.AddListener(uiBase.ID+ "OnEnterComplete", OnEnterComplete);
-            MsgManager.Instance.AddListener(uiBase.ID + "OnExitComplete", OnExitComplete);
-        }
+        OnExitComplete = action;
     }
-
-    protected abstract void Enter();
-
-    protected abstract void Exit();
 }
 
 public static class UIEffectTime
