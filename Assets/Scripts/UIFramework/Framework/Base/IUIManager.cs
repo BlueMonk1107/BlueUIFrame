@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IUIManager
 {
-    void ShowUI(EUiId id,IPara para);
-    void HideUI(UILayer layer);
+    bool ShowUI(EUiId id,IPara para);
+    bool HideUI(UILayer layer);
     bool Back();
 }

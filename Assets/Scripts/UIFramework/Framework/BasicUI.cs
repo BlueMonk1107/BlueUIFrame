@@ -6,8 +6,9 @@ public class BasicUI : AUIBase, IUIState
 {
     private IPara paraCache;
 
-    public void Init(IPara para)
+    public virtual void Init(IPara para)
     {
+        layer = UILayer.BasicUI;
         uiState = UIStateEnum.INIT;
         CheckRepetition();
     }
@@ -29,17 +30,19 @@ public class BasicUI : AUIBase, IUIState
         }
     }
 
-    public void Show(IPara para)
+    public virtual void Show(IPara para)
     {
+        gameObject.SetActive(true);
         uiState = UIStateEnum.SHOW;
     }
 
-    public void Hide(IPara para)
+    public virtual void Hide(IPara para)
     {
+        gameObject.SetActive(false);
         uiState = UIStateEnum.HIDE;
     }
 
-    public void Complete(IPara para)
+    public virtual void Complete(IPara para)
     {
 
     }

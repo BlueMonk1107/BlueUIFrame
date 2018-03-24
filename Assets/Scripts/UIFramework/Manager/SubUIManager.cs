@@ -15,10 +15,12 @@ public class SubUIManager : MonoBehaviour, IUIManager
        
         uiStack = new Stack<EUiId>();
 
+        objectPool = new Dictionary<EUiId, Transform>();
+
         stateMachine = machine;
     }
 
-    public void ShowUI(EUiId id, IPara para)
+    public bool ShowUI(EUiId id, IPara para)
     {
         Transform uiTrans = SpawnUI(id);
         if (uiTrans != null)
@@ -31,27 +33,29 @@ public class SubUIManager : MonoBehaviour, IUIManager
                 objectPool[id] = uiTrans;
                 uiStack.Push(id);
                 stateMachine.ChangeUI(id);
+                return true;
             }
             else
             {
                 Debug.LogError("the prefab cannot find IUIState");
-                return;
+                return false;
             }
         }
         else
         {
-            Debug.LogError("UI Object Spawan False");
+            return false;
         }
     }
 
-    public void HideUI(UILayer layer)
+    public bool HideUI(UILayer layer)
     {
-        if(layer > managerLayer)
-            return;
+        if (layer > managerLayer)
+            return false;
         if (uiStack.Count > 0)
         {
             stateMachine.Hide(uiStack.Pop());
         }
+        return true;
     }
 
     private Transform SpawnUI(EUiId id)
@@ -61,7 +65,7 @@ public class SubUIManager : MonoBehaviour, IUIManager
         {
             if (!objectPool.ContainsKey(id) || objectPool[id] == null)
             {
-                objectPool[id] = Instantiate(Resources.Load(path), transform) as Transform;
+                objectPool[id] = Instantiate(Resources.Load<Transform>(path), transform);
             }
             return objectPool[id];
         }

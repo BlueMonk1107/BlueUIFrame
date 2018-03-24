@@ -4,22 +4,25 @@ using UnityEngine;
 
 public class TopUI : AUIBase, IUIState
 {
-    public void Init(IPara para)
+    public virtual void Init(IPara para)
     {
+        layer = UILayer.BasicUI;
         uiState = UIStateEnum.INIT;
     }
 
-    public void Show(IPara para)
+    public virtual void Show(IPara para)
     {
+        gameObject.SetActive(true);
         uiState = UIStateEnum.SHOW;
     }
 
-    public void Hide(IPara para)
+    public virtual void Hide(IPara para)
     {
+        gameObject.SetActive(false);
         uiState = UIStateEnum.HIDE;
     }
 
-    public void Complete(IPara para)
+    public virtual void Complete(IPara para)
     {
         throw new System.NotImplementedException();
     }

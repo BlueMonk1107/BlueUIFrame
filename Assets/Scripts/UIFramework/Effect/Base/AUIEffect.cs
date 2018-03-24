@@ -31,8 +31,8 @@ public abstract class AUIEffect : MonoBehaviour
     }
     protected float offset;
 
-    private Action<IPara> onEnterComplete;
-    private Action<IPara> OnExitComplete;
+    protected Action<IPara> onEnterComplete;
+    protected Action<IPara> OnExitComplete;
     public UIShowState uiShowState = UIShowState.Default;
 
     public abstract void Enter(IPara para = null);

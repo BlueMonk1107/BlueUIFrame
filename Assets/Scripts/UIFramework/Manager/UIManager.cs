@@ -49,28 +49,42 @@ public class UIManager : SingletonMono<UIManager>, IUIManager
         }
     }
 
-    public void ShowUI(EUiId id, IPara para)
+    public bool ShowUI(EUiId id, IPara para = null)
     {
-        Transform uiTrans = SpawnUI(id);
-        if (uiTrans != null)
+        UILayer layer = UILayer.BasicUI;
+        bool show = false;
+        foreach (KeyValuePair<UILayer, IUIManager> pair in subUiManagers)
         {
-            AUIBase uiBase = uiTrans.GetComponent<AUIBase>();
-            UILayer showLayer = uiBase.layer;
-            subUiManagers[showLayer].ShowUI(id, para);
-            HideUI(showLayer);
+            if (pair.Value.ShowUI(id, para))
+            {
+                show = true;
+                layer = pair.Key;
+            }
+        }
+
+        if (show)
+        {
+            HideUI(layer);
+            return true;
         }
         else
         {
-            Debug.LogError("UI对象生成失败");
+            Debug.LogError("show UI false");
+            return false;
         }
     }
 
-    public void HideUI(UILayer layer)
+    public bool HideUI(UILayer layer)
     {
+        bool hide = false;
         foreach (KeyValuePair<UILayer, IUIManager> pair in subUiManagers)
         {
-            pair.Value.HideUI(layer);
+            if (pair.Value.HideUI(layer))
+            {
+                hide = true;
+            }
         }
+        return hide;
     }
 
     private Transform SpawnUI(EUiId id)
@@ -78,7 +92,7 @@ public class UIManager : SingletonMono<UIManager>, IUIManager
         string path = UIPathManager.GetPath(id);
         if (!string.IsNullOrEmpty(path))
         {
-            return Instantiate(Resources.Load(path), transform) as Transform;
+            return Instantiate(Resources.Load<Transform>(path), transform);
         }
         else
         {

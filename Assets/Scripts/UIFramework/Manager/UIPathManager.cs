@@ -7,7 +7,11 @@ public static class UIPathManager
 
     private static readonly Dictionary<EUiId, string> UIPathDic = new Dictionary<EUiId, string>()
     {
-        {EUiId.MAIN_UI, ""}
+        {EUiId.MAIN_UI, "MainUI"},
+        {EUiId.VIEW_ONE, "ViewOne"},
+        {EUiId.VIEW_TWO, "ViewTwo"},
+        {EUiId.SIDE_VIEW, "Side"},
+        {EUiId.DIALOG, "Dialog" }
     };
 
     public static string GetPath(EUiId id)
@@ -21,11 +25,14 @@ public static class UIPathManager
             Debug.LogError("未在UIPathManager初始化该UI");
             return null;
         }
-    } 
+    }
 }
 
 public enum EUiId
 {
     MAIN_UI,
-    SECOND_UI
+    VIEW_ONE,
+    VIEW_TWO,
+    SIDE_VIEW,
+    DIALOG
 }
