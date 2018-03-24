@@ -65,7 +65,15 @@ public class SubUIManager : MonoBehaviour, IUIManager
         {
             if (!objectPool.ContainsKey(id) || objectPool[id] == null)
             {
-                objectPool[id] = Instantiate(Resources.Load<Transform>(path), transform);
+                Transform prefab = Resources.Load<Transform>(path);
+                if(prefab.GetComponent<AUIBase>().layer == managerLayer)
+                {
+                    objectPool[id] = Instantiate(prefab, transform);
+                }
+                else
+                {
+                    return null;
+                }
             }
             return objectPool[id];
         }

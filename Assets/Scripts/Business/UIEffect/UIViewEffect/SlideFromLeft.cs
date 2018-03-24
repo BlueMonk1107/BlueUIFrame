@@ -20,6 +20,9 @@ public class SlideFromLeft : SlideFullScreenUI
             case UIShowState.Old:
                 FromRight(para);
                 break;
+            default:
+                FromLeft(para);
+                break;
         }
     }
 
@@ -33,6 +36,9 @@ public class SlideFromLeft : SlideFullScreenUI
                 break;
             case UIShowState.Old:
                 ToRight(para);
+                break;
+            default:
+                FromLeft(para);
                 break;
         }
     }

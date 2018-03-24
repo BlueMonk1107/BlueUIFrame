@@ -62,16 +62,13 @@ public class UIManager : SingletonMono<UIManager>, IUIManager
             }
         }
 
-        if (show)
-        {
-            HideUI(layer);
-            return true;
-        }
-        else
+        if (!show)
         {
             Debug.LogError("show UI false");
             return false;
         }
+
+        return show;
     }
 
     public bool HideUI(UILayer layer)

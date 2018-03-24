@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public sealed class StateMachine<T> :MonoBehaviour
+public sealed class StateMachine<T>
 {
     private readonly Dictionary<T, IUIState> stateDic;
     private readonly Dictionary<T, AUIEffect> effectDic;
@@ -52,20 +52,19 @@ public sealed class StateMachine<T> :MonoBehaviour
 
     public void Show(T id, IPara para = null)
     {
-        IUIState ui = stateDic[CurrentUiId];
+        IUIState ui = stateDic[id];
         if (((AUIBase)ui).uiState == UIStateEnum.INIT)
         {
             ui.Init();
         }
-        ui.Show();
 
-        if (effectDic[CurrentUiId] != null)
+        if (effectDic[id] != null)
         {
-            effectDic[CurrentUiId].Enter(para);
+            effectDic[id].Enter(para);
         }
         else
         {
-            stateDic[CurrentUiId].Show(para);
+            ui.Show(para);
         }
     }
 
@@ -73,18 +72,18 @@ public sealed class StateMachine<T> :MonoBehaviour
     {
         if (CurrentUiId != null)
         {
-            if (CurrentUiId.Equals(id))
+            IUIState ui = stateDic[id];
+            if (((AUIBase)ui).uiState == UIStateEnum.INIT)
             {
                 return;
             }
-
-            if (effectDic[CurrentUiId] != null)
+            if (effectDic[id] != null)
             {
-                effectDic[CurrentUiId].Exit(para);
+                effectDic[id].Exit(para);
             }
             else
             {
-                stateDic[CurrentUiId].Hide(para);
+                stateDic[id].Hide(para);
             }
         }
     }
