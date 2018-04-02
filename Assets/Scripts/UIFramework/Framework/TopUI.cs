@@ -2,28 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TopUI : AUIBase, IUIState
+public class TopUI : AUIBase
 {
-    public virtual void Init(IPara para)
+    public override void Init()
     {
-        layer = UILayer.BasicUI;
-        uiState = UIStateEnum.INIT;
+        layer = UILayer.TopUI;
+        base.Init();
     }
 
-    public virtual void Show(IPara para)
+    public override void Show()
     {
-        gameObject.SetActive(true);
-        uiState = UIStateEnum.SHOW;
+        base.Show();
     }
 
-    public virtual void Hide(IPara para)
+    public override void Hide()
     {
-        gameObject.SetActive(false);
-        uiState = UIStateEnum.HIDE;
-    }
-
-    public virtual void Complete(IPara para)
-    {
-        throw new System.NotImplementedException();
+        base.Hide();
     }
 }

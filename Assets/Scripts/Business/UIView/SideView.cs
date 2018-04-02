@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class SideView : OverlayUI {
 
-    public override void Init(IPara para)
+    public override void Init()
     {
-        base.Init(para);
+        base.Init();
         UITool.AddBtnListener(transform, () => { UIManager.Instance.Back(); }, "Back");
         UITool.AddBtnListener(transform, () => { UIManager.Instance.ShowUI(EUiId.VIEW_ONE); }, "One");
         UITool.AddBtnListener(transform, () => { UIManager.Instance.ShowUI(EUiId.VIEW_TWO); }, "Two");

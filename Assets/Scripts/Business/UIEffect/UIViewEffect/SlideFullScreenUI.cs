@@ -8,41 +8,41 @@ using DG.Tweening;
 /// </summary>
 public class SlideFullScreenUI : AUIEffect
 {
-    protected void FromRight(IPara para)
+    protected void FromRight()
     {
         offset = DefaultScreenWidth + RectTrans.sizeDelta.x;
         RectTrans.anchoredPosition = DefaultAnchorPos + Vector2.right * offset;
         RectTrans.DOAnchorPos(DefaultAnchorPos, UIEffectTime.SLIDE_FROM_Right).SetEase(Ease.Linear).OnComplete(() =>
         {
-            onEnterComplete(para);
+            onEnterComplete();
         });
     }
 
-    protected void FromLeft(IPara para)
+    protected void FromLeft()
     {
         offset = DefaultScreenWidth + RectTrans.sizeDelta.x;
         RectTrans.anchoredPosition = DefaultAnchorPos - Vector2.right * offset;
         RectTrans.DOAnchorPos(DefaultAnchorPos, UIEffectTime.SLIDE_FROM_Right).SetEase(Ease.Linear).OnComplete(() =>
         {
-            onEnterComplete(para);
+            onEnterComplete();
         });
     }
 
-    protected void ToRight(IPara para)
+    protected void ToRight()
     {
         Vector2 targetAnchorPos = RectTrans.anchoredPosition + Vector2.right * offset;
         RectTrans.DOAnchorPos(targetAnchorPos, UIEffectTime.SLIDE_FROM_Right).SetEase(Ease.Linear).OnComplete(() =>
         {
-            OnExitComplete(para);
+            OnExitComplete();
         });
     }
 
-    protected void ToLeft(IPara para)
+    protected void ToLeft()
     {
         Vector2 targetAnchorPos = RectTrans.anchoredPosition - Vector2.right * offset;
         RectTrans.DOAnchorPos(targetAnchorPos, UIEffectTime.SLIDE_FROM_Right).SetEase(Ease.Linear).OnComplete(() =>
         {
-            OnExitComplete(para);
+            OnExitComplete();
         });
     }
 
@@ -51,11 +51,11 @@ public class SlideFullScreenUI : AUIEffect
         
     }
 
-    public override void Enter(IPara para = null)
+    public override void Enter()
     {
     }
 
-    public override void Exit(IPara para = null)
+    public override void Exit()
     {
     }
 }

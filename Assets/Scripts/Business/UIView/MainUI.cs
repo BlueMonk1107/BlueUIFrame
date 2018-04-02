@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MainUI : BasicUI {
-    public override void Init(IPara para)
+    public override void Init()
     {
-        base.Init(para);
+        base.Init();
         InitUI(EUiId.MAIN_UI, true);
         UITool.AddBtnListener(transform, () => { UIManager.Instance.ShowUI(EUiId.VIEW_ONE);},"One");
         UITool.AddBtnListener(transform, () => { UIManager.Instance.ShowUI(EUiId.VIEW_TWO); }, "Two");

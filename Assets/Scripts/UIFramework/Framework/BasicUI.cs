@@ -2,14 +2,14 @@
 using System.Reflection;
 using UnityEngine;
 
-public class BasicUI : AUIBase, IUIState
+public class BasicUI : AUIBase
 {
     private IPara paraCache;
 
-    public virtual void Init(IPara para)
+    public override void Init()
     {
+        base.Init();
         layer = UILayer.BasicUI;
-        uiState = UIStateEnum.INIT;
         CheckRepetition();
     }
 
@@ -30,20 +30,13 @@ public class BasicUI : AUIBase, IUIState
         }
     }
 
-    public virtual void Show(IPara para)
+    public override void Show()
     {
-        gameObject.SetActive(true);
-        uiState = UIStateEnum.SHOW;
+        base.Show();
     }
 
-    public virtual void Hide(IPara para)
+    public override void Hide()
     {
-        gameObject.SetActive(false);
-        uiState = UIStateEnum.HIDE;
-    }
-
-    public virtual void Complete(IPara para)
-    {
-
+        base.Hide();
     }
 }

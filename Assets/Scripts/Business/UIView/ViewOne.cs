@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ViewOne : BasicUI
 {
-    public override void Init(IPara para)
+    public override void Init()
     {
-        base.Init(para);
+        base.Init();
         UITool.AddBtnListener(transform, () => { UIManager.Instance.Back(); }, "Back");
         UITool.AddBtnListener(transform, () => { UIManager.Instance.ShowUI(EUiId.VIEW_TWO); }, "Two");
         UITool.AddBtnListener(transform, () => { UIManager.Instance.ShowUI(EUiId.MAIN_UI); }, "Main");

@@ -49,13 +49,13 @@ public class UIManager : SingletonMono<UIManager>, IUIManager
         }
     }
 
-    public bool ShowUI(EUiId id, IPara para = null)
+    public bool ShowUI(EUiId id)
     {
         UILayer layer = UILayer.BasicUI;
         bool show = false;
         foreach (KeyValuePair<UILayer, IUIManager> pair in subUiManagers)
         {
-            if (pair.Value.ShowUI(id, para))
+            if (pair.Value.ShowUI(id))
             {
                 show = true;
                 layer = pair.Key;

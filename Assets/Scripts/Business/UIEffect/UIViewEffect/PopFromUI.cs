@@ -6,7 +6,7 @@ using DG.Tweening;
 
 public class PopFromUI : AUIEffect {
     private Vector3 sourcePosition;
-    public override void Enter(IPara para)
+    public override void Enter()
     {
         SetSourcePosition();
         RectTrans.position = sourcePosition;
@@ -15,12 +15,12 @@ public class PopFromUI : AUIEffect {
         RectTrans.DOScale(1, UIEffectTime.POP_FROM_UI);
     }
 
-    public override void Exit(IPara para)
+    public override void Exit()
     {
         RectTrans.DOMove(sourcePosition, UIEffectTime.POP_FROM_UI);
         RectTrans.DOScale(0, UIEffectTime.POP_FROM_UI).OnComplete(() =>
         {
-            OnExitComplete(para);
+            OnExitComplete();
         });
     }
 

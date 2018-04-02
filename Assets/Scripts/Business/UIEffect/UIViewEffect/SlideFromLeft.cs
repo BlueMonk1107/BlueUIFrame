@@ -9,36 +9,36 @@ using DG.Tweening;
 public class SlideFromLeft : SlideFullScreenUI
 {
 
-    public override void Enter(IPara para)
+    public override void Enter()
     {
-        base.Enter(para);
+        base.Enter();
         switch (uiShowState)
         {
             case UIShowState.New:
-                FromLeft(para);
+                FromLeft();
                 break;
             case UIShowState.Old:
-                FromRight(para);
+                FromRight();
                 break;
             default:
-                FromLeft(para);
+                FromLeft();
                 break;
         }
     }
 
-    public override void Exit(IPara para)
+    public override void Exit()
     {
-        base.Exit(para);
+        base.Exit();
         switch (uiShowState)
         {
             case UIShowState.New:
-                ToLeft(para);
+                ToLeft();
                 break;
             case UIShowState.Old:
-                ToRight(para);
+                ToRight();
                 break;
             default:
-                FromLeft(para);
+                FromLeft();
                 break;
         }
     }

@@ -20,7 +20,7 @@ public class SubUIManager : MonoBehaviour, IUIManager
         stateMachine = machine;
     }
 
-    public bool ShowUI(EUiId id, IPara para)
+    public bool ShowUI(EUiId id)
     {
         Transform uiTrans = SpawnUI(id);
         if (uiTrans != null)

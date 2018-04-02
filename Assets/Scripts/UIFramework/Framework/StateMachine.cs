@@ -15,10 +15,10 @@ public sealed class StateMachine<T>
         stateDic = new Dictionary<T, IUIState>();
         effectDic = new Dictionary<T, AUIEffect>();
     }
-    
+
     public void AddUI(T id, IUIState stateMethod, AUIEffect uiEffect)
     {
-        if(stateMethod == null)
+        if (stateMethod == null)
         {
             Debug.LogError("the prefab cannot find IUIState");
             return;
@@ -27,7 +27,7 @@ public sealed class StateMachine<T>
         {
             stateDic[id] = stateMethod;
             effectDic[id] = uiEffect;
-            if(uiEffect != null)
+            if (uiEffect != null)
             {
                 uiEffect.AddEnterListener(stateMethod.Show);
                 uiEffect.AddEnterListener(stateMethod.Hide);
@@ -42,48 +42,53 @@ public sealed class StateMachine<T>
             stateDic.Remove(id);
         }
     }
-    
-    public void ChangeUI(T id, IPara para = null)
+
+    public void ChangeUI(T id)
     {
-        Hide(CurrentUiId, para);
+        Hide(CurrentUiId);
         CurrentUiId = id;
-        Show(CurrentUiId, para);
+        Show(CurrentUiId);
     }
 
-    public void Show(T id, IPara para = null)
+    public void Show(T id)
     {
         IUIState ui = stateDic[id];
-        if (((AUIBase)ui).uiState == UIStateEnum.INIT)
+        UIStateEnum state = ((AUIBase)ui).uiState;
+        if (state == UIStateEnum.UNINIT)
         {
             ui.Init();
+        }
+        else if (state == UIStateEnum.SHOW)
+        {
+            return;
         }
 
         if (effectDic[id] != null)
         {
-            effectDic[id].Enter(para);
+            effectDic[id].Enter();
         }
         else
         {
-            ui.Show(para);
+            ui.Show();
         }
     }
 
-    public void Hide(T id, IPara para = null)
+    public void Hide(T id)
     {
         if (CurrentUiId != null)
         {
             IUIState ui = stateDic[id];
-            if (((AUIBase)ui).uiState == UIStateEnum.INIT)
+            if (((AUIBase)ui).uiState == UIStateEnum.UNINIT)
             {
                 return;
             }
             if (effectDic[id] != null)
             {
-                effectDic[id].Exit(para);
+                effectDic[id].Exit();
             }
             else
             {
-                stateDic[id].Hide(para);
+                stateDic[id].Hide();
             }
         }
     }
@@ -91,6 +96,7 @@ public sealed class StateMachine<T>
 
 public enum UIStateEnum
 {
+    UNINIT,
     INIT,
     SHOW,
     HIDE

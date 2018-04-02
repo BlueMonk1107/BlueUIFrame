@@ -31,20 +31,20 @@ public abstract class AUIEffect : MonoBehaviour
     }
     protected float offset;
 
-    protected Action<IPara> onEnterComplete;
-    protected Action<IPara> OnExitComplete;
+    protected Action onEnterComplete;
+    protected Action OnExitComplete;
     public UIShowState uiShowState = UIShowState.Default;
 
-    public abstract void Enter(IPara para = null);
+    public abstract void Enter();
 
-    public abstract void Exit(IPara para = null);
+    public abstract void Exit();
 
-    public virtual void AddEnterListener(Action<IPara> action)
+    public virtual void AddEnterListener(Action action)
     {
         onEnterComplete = action;
     }
 
-    public virtual void AddExitListener(Action<IPara> action)
+    public virtual void AddExitListener(Action action)
     {
         OnExitComplete = action;
     }

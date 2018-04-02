@@ -7,30 +7,30 @@ using UnityEngine;
 /// </summary>
 public class SlideFromRight : SlideFullScreenUI
 {
-    public override void Enter(IPara para)
+    public override void Enter()
     {
         base.Enter();
         switch (uiShowState)
         {
             case UIShowState.New:
-                FromRight(para);
+                FromRight();
                 break;
             case UIShowState.Old:
-                FromLeft(para);
+                FromLeft();
                 break;
         }
     }
 
-    public override void Exit(IPara para)
+    public override void Exit()
     {
         base.Exit();
         switch (uiShowState)
         {
             case UIShowState.New:
-                ToRight(para);
+                ToRight();
                 break;
             case UIShowState.Old:
-                ToLeft(para);
+                ToLeft();
                 break;
         }
     }

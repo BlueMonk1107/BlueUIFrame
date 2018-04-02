@@ -8,17 +8,17 @@ using DG.Tweening;
 /// </summary>
 public class FromMiddlePulled : AUIEffect
 {
-    public override void Enter(IPara para)
+    public override void Enter()
     {
         RectTrans.localScale = new Vector3(0, 1, 1);
         RectTrans.DOScaleX(1, UIEffectTime.OPEN_FROM_MIDDLE);
     }
 
-    public override void Exit(IPara para)
+    public override void Exit()
     {
         RectTrans.DOScaleX(0, UIEffectTime.OPEN_FROM_MIDDLE).OnComplete(() =>
         {
-            OnExitComplete(para);
+            OnExitComplete();
             OnExitComplete -= OnExitComplete;
         });
     }
