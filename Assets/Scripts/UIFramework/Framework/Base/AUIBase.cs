@@ -10,8 +10,6 @@ public abstract class AUIBase : MonoBehaviour, IUIState
 
     public UIStateEnum uiState { get; protected set; }
 
-    public bool IsMainUI { get; private set; }
-
     public virtual void Init()
     {
         uiState = UIStateEnum.INIT;
@@ -29,10 +27,9 @@ public abstract class AUIBase : MonoBehaviour, IUIState
         gameObject.SetActive(false);
     }
 
-    protected void InitUI(EUiId id,bool isMainUI = false)
+    protected void InitUI(EUiId id)
     {
         ID = id;
         uiState = UIStateEnum.UNINIT;
-        IsMainUI = isMainUI;
     }
 }
