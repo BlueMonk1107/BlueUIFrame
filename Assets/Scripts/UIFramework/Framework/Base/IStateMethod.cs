@@ -1,10 +1,17 @@
-﻿using System.Collections;
+﻿//=======================================================
+// 作者：BlueMonk
+// 描述：A simple UI framework For Unity . 
+//=======================================================
+using System.Collections;
 using System.Xml.Serialization;
 using UnityEngine;
 
-public interface IUIState
+namespace BlueUIFrame
 {
-    void Init();
-    void Show();
-    void Hide();
+    public interface IUIState
+    {
+        void Init();
+        void Show();
+        void Hide();
+    }
 }

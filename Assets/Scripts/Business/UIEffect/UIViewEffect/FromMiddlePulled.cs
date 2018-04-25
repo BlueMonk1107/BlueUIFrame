@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using BlueUIFrame;
 
 /// <summary>
 /// 界面在中心，从竖直一条线打开成界面

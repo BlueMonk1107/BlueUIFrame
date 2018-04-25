@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using BlueUIFrame;
 
 /// <summary>
 /// 从左侧滑进屏幕

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using BlueUIFrame;
 
 /// <summary>
 /// 从右侧滑进屏幕

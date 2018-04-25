@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using BlueUIFrame;
 
 public class MainUI : BasicUI {
     public override void Init()

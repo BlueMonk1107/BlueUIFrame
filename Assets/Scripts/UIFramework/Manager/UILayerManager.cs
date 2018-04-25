@@ -1,45 +1,52 @@
-﻿using System.Collections;
+﻿//=======================================================
+// 作者：BlueMonk
+// 描述：A simple UI framework For Unity . 
+//=======================================================
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class UILayerManager : SingletonMono<UILayerManager>
+namespace BlueUIFrame
 {
-    public Dictionary<UILayer, GameObject> UILayerObjDic { get; private set; }
-
-    public void Init()
+    public class UILayerManager : SingletonMono<UILayerManager>
     {
-        UILayerObjDic = new Dictionary<UILayer, GameObject>();
-        RectTransform rect;
-        foreach (UILayer item in Enum.GetValues(typeof(UILayer)))
+        public Dictionary<UILayer, GameObject> UILayerObjDic { get; private set; }
+
+        public void Init()
         {
-            UILayerObjDic[item] = new GameObject(item.ToString());
-            rect = UILayerObjDic[item].AddComponent<RectTransform>();
-            InitLayerObj(rect);
+            UILayerObjDic = new Dictionary<UILayer, GameObject>();
+            RectTransform rect;
+            foreach (UILayer item in Enum.GetValues(typeof(UILayer)))
+            {
+                UILayerObjDic[item] = new GameObject(item.ToString());
+                rect = UILayerObjDic[item].AddComponent<RectTransform>();
+                InitLayerObj(rect);
+            }
+        }
+
+        public void SetUILayer(AUIBase ui)
+        {
+            ui.transform.SetParent(UILayerObjDic[ui.layer].transform);
+        }
+
+        private void InitLayerObj(RectTransform rect)
+        {
+            rect.SetParent(transform);
+            rect.anchorMax = Vector2.one;
+            rect.anchorMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+            rect.offsetMin = Vector2.zero;
+            rect.sizeDelta = Vector2.zero;
+            rect.localScale = Vector3.one;
+            rect.localPosition = Vector3.zero;
         }
     }
 
-    public void SetUILayer(AUIBase ui)
+    public enum UILayer
     {
-        ui.transform.SetParent(UILayerObjDic[ui.layer].transform);
+        BasicUI,
+        OverlayUI,
+        TopUI
     }
-
-    private void InitLayerObj(RectTransform rect)
-    {
-        rect.SetParent(transform);
-        rect.anchorMax = Vector2.one;
-        rect.anchorMin = Vector2.zero;
-        rect.offsetMax = Vector2.zero;
-        rect.offsetMin = Vector2.zero;
-        rect.sizeDelta = Vector2.zero;
-        rect.localScale = Vector3.one;
-        rect.localPosition = Vector3.zero;
-    }    
-}
-
-public enum UILayer
-{
-    BasicUI,
-    OverlayUI,
-    TopUI
 }

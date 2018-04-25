@@ -1,113 +1,120 @@
-﻿using System;
+﻿//=======================================================
+// 作者：BlueMonk
+// 描述：A simple UI framework For Unity . 
+//=======================================================
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class UIManager : SingletonMono<UIManager>, IUIManager
+namespace BlueUIFrame
 {
-    private Dictionary<UILayer, IUIManager> subUiManagers;
-    private void Awake()
+    public class UIManager : SingletonMono<UIManager>, IUIManager
     {
-        InitSystem();
-    }
-
-    private void InitSystem()
-    {
-        StateMachine<EUiId> stateMachine = new StateMachine<EUiId>();
-        subUiManagers = new Dictionary<UILayer, IUIManager>();
-        //添加消息系统
-        AddManager<MsgManager>(gameObject);
-        //添加层级系统
-        UILayerManager layerManager = AddManager<UILayerManager>(gameObject);
-        layerManager.Init();
-        SpawnSubUIManager(layerManager,stateMachine);
-    }
-
-    private T AddManager<T>(GameObject obj) where T : MonoBehaviour
-    {
-        if (GetComponent<T>() == null)
+        private Dictionary<UILayer, IUIManager> subUiManagers;
+        private void Awake()
         {
-            return obj.AddComponent<T>();
+            InitSystem();
         }
-        else
-        {
-            return obj.GetComponent<T>();
-        }
-    }
 
-    private void SpawnSubUIManager(UILayerManager layerMgr, StateMachine<EUiId> stateMachine)
-    {
-        GameObject layerParent = null;
-        SubUIManager subUiManager = null;
-        foreach (UILayer item in Enum.GetValues(typeof(UILayer)))
+        private void InitSystem()
         {
-            layerParent = layerMgr.UILayerObjDic[item];
-            subUiManager = AddManager<SubUIManager>(layerParent);
-            subUiManager.Init(item, stateMachine);
-            subUiManagers[item] = subUiManager;
+            StateMachine<EUiId> stateMachine = new StateMachine<EUiId>();
+            subUiManagers = new Dictionary<UILayer, IUIManager>();
+            //添加消息系统
+            AddManager<MsgManager>(gameObject);
+            //添加层级系统
+            UILayerManager layerManager = AddManager<UILayerManager>(gameObject);
+            layerManager.Init();
+            SpawnSubUIManager(layerManager, stateMachine);
         }
-    }
 
-    public bool ShowUI(EUiId id)
-    {
-        UILayer layer = UILayer.BasicUI;
-        bool show = false;
-        foreach (KeyValuePair<UILayer, IUIManager> pair in subUiManagers)
+        private T AddManager<T>(GameObject obj) where T : MonoBehaviour
         {
-            if (pair.Value.ShowUI(id))
+            if (GetComponent<T>() == null)
             {
-                show = true;
-                layer = pair.Key;
+                return obj.AddComponent<T>();
+            }
+            else
+            {
+                return obj.GetComponent<T>();
             }
         }
 
-        if (!show)
+        private void SpawnSubUIManager(UILayerManager layerMgr, StateMachine<EUiId> stateMachine)
         {
-            Debug.LogError("show UI false");
+            GameObject layerParent = null;
+            SubUIManager subUiManager = null;
+            foreach (UILayer item in Enum.GetValues(typeof(UILayer)))
+            {
+                layerParent = layerMgr.UILayerObjDic[item];
+                subUiManager = AddManager<SubUIManager>(layerParent);
+                subUiManager.Init(item, stateMachine);
+                subUiManagers[item] = subUiManager;
+            }
+        }
+
+        public bool ShowUI(EUiId id)
+        {
+            UILayer layer = UILayer.BasicUI;
+            bool show = false;
+            foreach (KeyValuePair<UILayer, IUIManager> pair in subUiManagers)
+            {
+                if (pair.Value.ShowUI(id))
+                {
+                    show = true;
+                    layer = pair.Key;
+                }
+            }
+
+            if (!show)
+            {
+                Debug.LogError("show UI false");
+                return false;
+            }
+
+            return show;
+        }
+
+        public bool HideUI(UILayer layer)
+        {
+            bool hide = false;
+            foreach (KeyValuePair<UILayer, IUIManager> pair in subUiManagers)
+            {
+                if (pair.Value.HideUI(layer))
+                {
+                    hide = true;
+                }
+            }
+            return hide;
+        }
+
+        private Transform SpawnUI(EUiId id)
+        {
+            string path = UIPathManager.GetPath(id);
+            if (!string.IsNullOrEmpty(path))
+            {
+                return Instantiate(Resources.Load<Transform>(path), transform);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public bool Back()
+        {
+            Array layers = Enum.GetValues(typeof(UILayer));
+            Array.Reverse(layers);
+            foreach (UILayer item in layers)
+            {
+                if (subUiManagers[item].Back())
+                {
+                    return true;
+                }
+            }
             return false;
         }
-
-        return show;
-    }
-
-    public bool HideUI(UILayer layer)
-    {
-        bool hide = false;
-        foreach (KeyValuePair<UILayer, IUIManager> pair in subUiManagers)
-        {
-            if (pair.Value.HideUI(layer))
-            {
-                hide = true;
-            }
-        }
-        return hide;
-    }
-
-    private Transform SpawnUI(EUiId id)
-    {
-        string path = UIPathManager.GetPath(id);
-        if (!string.IsNullOrEmpty(path))
-        {
-            return Instantiate(Resources.Load<Transform>(path), transform);
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public bool Back()
-    {
-        Array layers = Enum.GetValues(typeof(UILayer));
-        Array.Reverse(layers);
-        foreach (UILayer item in layers)
-        {
-            if (subUiManagers[item].Back())
-            {
-                return true;
-            }
-        }
-        return false;
     }
 }

@@ -1,35 +1,42 @@
-﻿using System.Collections;
+﻿//=======================================================
+// 作者：BlueMonk
+// 描述：A simple UI framework For Unity . 
+//=======================================================
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class AUIBase : MonoBehaviour, IUIState
+namespace BlueUIFrame
 {
-
-    public EUiId ID { get; private set; }
-    public UILayer layer { get; protected set; }
-
-    public UIStateEnum uiState { get; protected set; }
-
-    public virtual void Init()
+    public abstract class AUIBase : MonoBehaviour, IUIState
     {
-        uiState = UIStateEnum.INIT;
-    }
 
-    public virtual void Show()
-    {
-        uiState = UIStateEnum.SHOW;
-        gameObject.SetActive(true);
-    }
+        public EUiId ID { get; private set; }
+        public UILayer layer { get; protected set; }
 
-    public virtual void Hide()
-    {
-        uiState = UIStateEnum.HIDE;
-        gameObject.SetActive(false);
-    }
+        public UIStateEnum uiState { get; protected set; }
 
-    protected void InitUI(EUiId id)
-    {
-        ID = id;
-        uiState = UIStateEnum.UNINIT;
+        public virtual void Init()
+        {
+            uiState = UIStateEnum.INIT;
+        }
+
+        public virtual void Show()
+        {
+            uiState = UIStateEnum.SHOW;
+            gameObject.SetActive(true);
+        }
+
+        public virtual void Hide()
+        {
+            uiState = UIStateEnum.HIDE;
+            gameObject.SetActive(false);
+        }
+
+        protected void InitUI(EUiId id)
+        {
+            ID = id;
+            uiState = UIStateEnum.UNINIT;
+        }
     }
 }

@@ -1,67 +1,74 @@
-﻿using System.Collections;
+﻿//=======================================================
+// 作者：BlueMonk
+// 描述：A simple UI framework For Unity . 
+//=======================================================
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
 
-public abstract class AUIEffect : MonoBehaviour
+namespace BlueUIFrame
 {
-    private RectTransform rectTrans;
-
-    protected RectTransform RectTrans
+    public abstract class AUIEffect : MonoBehaviour
     {
-        get
+        private RectTransform rectTrans;
+
+        protected RectTransform RectTrans
         {
-            if (rectTrans == null)
+            get
             {
-                rectTrans = GetComponent<RectTransform>();
+                if (rectTrans == null)
+                {
+                    rectTrans = GetComponent<RectTransform>();
+                }
+                return rectTrans;
             }
-            return rectTrans;
+        }
+
+        protected float DefaultScreenWidth
+        {
+            get { return FindObjectOfType<CanvasScaler>().referenceResolution.x; }
+        }
+
+        protected Vector2 DefaultAnchorPos
+        {
+            get { return rectTrans.anchoredPosition; }
+        }
+        protected float offset;
+
+        protected Action onEnterComplete;
+        protected Action OnExitComplete;
+        public UIShowState uiShowState = UIShowState.Default;
+
+        public abstract void Enter();
+
+        public abstract void Exit();
+
+        public virtual void AddEnterListener(Action action)
+        {
+            onEnterComplete = action;
+        }
+
+        public virtual void AddExitListener(Action action)
+        {
+            OnExitComplete = action;
         }
     }
 
-    protected float DefaultScreenWidth
+    public static class UIEffectTime
     {
-        get { return FindObjectOfType<CanvasScaler>().referenceResolution.x; }
+        public const float SLIDE_FROM_LEFT = 0.5f;
+        public const float SLIDE_FROM_Right = 0.5f;
+        public const float OPEN_FROM_MIDDLE = 0.5f;
+        public const float FROM_LEFT_PULLED = 1f;
+        public const float POP_FROM_UI = 0.6f;
     }
 
-    protected Vector2 DefaultAnchorPos
+    public enum UIShowState
     {
-        get { return rectTrans.anchoredPosition; }
+        Default,
+        New,
+        Old
     }
-    protected float offset;
-
-    protected Action onEnterComplete;
-    protected Action OnExitComplete;
-    public UIShowState uiShowState = UIShowState.Default;
-
-    public abstract void Enter();
-
-    public abstract void Exit();
-
-    public virtual void AddEnterListener(Action action)
-    {
-        onEnterComplete = action;
-    }
-
-    public virtual void AddExitListener(Action action)
-    {
-        OnExitComplete = action;
-    }
-}
-
-public static class UIEffectTime
-{
-    public const float SLIDE_FROM_LEFT = 0.5f;
-    public const float SLIDE_FROM_Right = 0.5f;
-    public const float OPEN_FROM_MIDDLE = 0.5f;
-    public const float FROM_LEFT_PULLED = 1f;
-    public const float POP_FROM_UI = 0.6f;
-}
-
-public enum UIShowState
-{
-    Default,
-    New,
-    Old
 }

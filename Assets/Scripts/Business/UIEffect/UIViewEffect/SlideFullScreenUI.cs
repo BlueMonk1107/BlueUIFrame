@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using BlueUIFrame;
 
 /// <summary>
 /// 全屏UI滑动特效

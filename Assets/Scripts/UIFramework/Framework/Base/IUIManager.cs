@@ -1,10 +1,17 @@
-﻿using System.Collections;
+﻿//=======================================================
+// 作者：BlueMonk
+// 描述：A simple UI framework For Unity . 
+//=======================================================
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IUIManager
+namespace BlueUIFrame
 {
-    bool ShowUI(EUiId id);
-    bool HideUI(UILayer layer);
-    bool Back();
+    public interface IUIManager
+    {
+        bool ShowUI(EUiId id);
+        bool HideUI(UILayer layer);
+        bool Back();
+    }
 }

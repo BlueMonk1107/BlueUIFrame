@@ -1,29 +1,36 @@
-﻿using System.Collections;
+﻿//=======================================================
+// 作者：BlueMonk
+// 描述：A simple UI framework For Unity . 
+//=======================================================
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SingletonMono<T> : MonoBehaviour where T:MonoBehaviour
+namespace BlueUIFrame
 {
-
-    private static T instance;
-
-    public static T Instance
+    public class SingletonMono<T> : MonoBehaviour where T : MonoBehaviour
     {
-        get
+
+        private static T instance;
+
+        public static T Instance
         {
-            T t = FindObjectOfType<T>();
-            if (instance == null)
+            get
             {
-                if (t != null)
+                T t = FindObjectOfType<T>();
+                if (instance == null)
                 {
-                    instance = t;
+                    if (t != null)
+                    {
+                        instance = t;
+                    }
+                    else
+                    {
+                        Debug.LogError("类" + typeof(T).Name + "单例对象为空");
+                    }
                 }
-                else
-                {
-                    Debug.LogError("类"+typeof(T).Name+"单例对象为空");
-                }
+                return instance;
             }
-            return instance;
         }
     }
 }

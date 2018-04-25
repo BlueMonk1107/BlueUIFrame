@@ -1,70 +1,77 @@
-﻿using System.Collections;
+﻿//=======================================================
+// 作者：BlueMonk
+// 描述：A simple UI framework For Unity . 
+//=======================================================
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class MsgManager : SingletonMono<MsgManager>
+namespace BlueUIFrame
 {
-    private Dictionary<string, Action<IPara>> actionDic; 
-
-    public void Init()
+    public class MsgManager : SingletonMono<MsgManager>
     {
-        actionDic = new Dictionary<string, Action<IPara>>();
-    }
+        private Dictionary<string, Action<IPara>> actionDic;
 
-    public void AddListener(string key, Action<IPara> action)
-    {
-        if (!actionDic.ContainsKey(key))
+        public void Init()
         {
-            actionDic[key] = action;
+            actionDic = new Dictionary<string, Action<IPara>>();
         }
-        else
-        {
-            Debug.LogError("消息系统键值重复，重复项为:"+key);
-        }
-        
-    }
 
-    public void RemoveListener(string key)
-    {
-        if (actionDic.ContainsKey(key))
+        public void AddListener(string key, Action<IPara> action)
         {
-            actionDic.Remove(key);
-        }
-    }
-
-    public void RemoveListener(Action<IPara> action)
-    {
-        if (actionDic.ContainsValue(action))
-        {
-            foreach (var pair in actionDic)
+            if (!actionDic.ContainsKey(key))
             {
-                if (pair.Value == action)
-                {
-                    actionDic.Remove(pair.Key);
-                    break;
-                }
-            }
-        }
-    }
-
-    public void SendMessage(string key,IPara para)
-    {
-        if (actionDic.ContainsKey(key))
-        {
-            Action<IPara> action = actionDic[key];
-            if ( action != null)
-            {
-                action(para);
+                actionDic[key] = action;
             }
             else
             {
-                Debug.LogError("存在键值"+key+"但委托为空");
+                Debug.LogError("消息系统键值重复，重复项为:" + key);
+            }
+
+        }
+
+        public void RemoveListener(string key)
+        {
+            if (actionDic.ContainsKey(key))
+            {
+                actionDic.Remove(key);
             }
         }
-        else
+
+        public void RemoveListener(Action<IPara> action)
         {
-            Debug.LogError("消息系统不含键值:" + key);
+            if (actionDic.ContainsValue(action))
+            {
+                foreach (var pair in actionDic)
+                {
+                    if (pair.Value == action)
+                    {
+                        actionDic.Remove(pair.Key);
+                        break;
+                    }
+                }
+            }
+        }
+
+        public void SendMessage(string key, IPara para)
+        {
+            if (actionDic.ContainsKey(key))
+            {
+                Action<IPara> action = actionDic[key];
+                if (action != null)
+                {
+                    action(para);
+                }
+                else
+                {
+                    Debug.LogError("存在键值" + key + "但委托为空");
+                }
+            }
+            else
+            {
+                Debug.LogError("消息系统不含键值:" + key);
+            }
         }
     }
 }
