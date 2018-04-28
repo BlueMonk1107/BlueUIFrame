@@ -16,14 +16,28 @@ namespace BlueUIFrame.Easy
     {
         private Stack<UIHandler> uiStack;
         private Dictionary<EUiId, Transform> prefabPool;
+        protected UIProxyManager proxyManager;
+        public UIProxyManager ProxyManager
+        {
+            get
+            {
+                return proxyManager;
+            }
+        }
+        public UILayerManager LayerManager
+        {
+            get
+            {
+                return GetComponent<UILayerManager>();
+            }
+        }
 
-        public void InitUISystem()
+        public virtual void InitUISystem()
         {
             uiStack = new Stack<UIHandler>();
             prefabPool = new Dictionary<EUiId, Transform>();
 
-            UILayerManager layerManager = AddManager<UILayerManager>(gameObject);
-            layerManager.Init();
+            AddManager<UILayerManager>(gameObject).Init();
         }
 
         private T AddManager<T>(GameObject obj) where T : MonoBehaviour
@@ -44,11 +58,11 @@ namespace BlueUIFrame.Easy
             AUIBase ui = uiTrans.GetComponent<AUIBase>();
             if (ui == null)
                 throw new Exception("Can't find AUIBase component");
-            
-            if(ui.GetLayer() == UILayer.BasicUI)
+
+            if (ui.GetLayer() == UILayer.BasicUI)
             {
                 UIHandler newData = new UIHandler(ui);
-                if(uiStack.Count > 0)
+                if (uiStack.Count > 0)
                 {
                     uiStack.Peek().Hide(ui.GetLayer());
                 }
@@ -137,7 +151,7 @@ namespace BlueUIFrame.Easy
 
         public UIHandler(AUIBase basicUI)
         {
-            if(basicUI != null)
+            if (basicUI != null)
             {
                 data = new UIData((BasicUI)basicUI);
             }
@@ -149,13 +163,13 @@ namespace BlueUIFrame.Easy
 
         public void Show(AUIBase ui)
         {
-            switch(ui.GetLayer())
+            switch (ui.GetLayer())
             {
                 case UILayer.BasicUI:
                     ShowUI<BasicUI>(ui);
                     break;
                 case UILayer.OverlayUI:
-                    ShowUI(ui,data.OverlayUIStack);
+                    ShowUI(ui, data.OverlayUIStack);
                     break;
                 case UILayer.TopUI:
                     ShowUI(ui, data.TopUIStack);
@@ -166,7 +180,7 @@ namespace BlueUIFrame.Easy
         public void BackToShow()
         {
             ShowUI<BasicUI>(data.BasicUI);
-            if (data.OverlayUIStack.Count>0)
+            if (data.OverlayUIStack.Count > 0)
             {
                 HandleState(data.OverlayUIStack.Peek());
             }
@@ -178,20 +192,20 @@ namespace BlueUIFrame.Easy
 
         public void Hide(UILayer showLayer)
         {
-            HideUI<BasicUI>(showLayer,UILayer.BasicUI);
-            HideUI(showLayer,UILayer.OverlayUI,data.OverlayUIStack);
+            HideUI<BasicUI>(showLayer, UILayer.BasicUI);
+            HideUI(showLayer, UILayer.OverlayUI, data.OverlayUIStack);
             HideUI(showLayer, UILayer.TopUI, data.TopUIStack);
         }
 
         public bool Back()
         {
-            if(CloseUI(data.TopUIStack))
+            if (CloseUI(data.TopUIStack))
             {
                 return true;
             }
             else
             {
-                if(CloseUI(data.OverlayUIStack))
+                if (CloseUI(data.OverlayUIStack))
                 {
                     return true;
                 }
@@ -202,9 +216,9 @@ namespace BlueUIFrame.Easy
             }
         }
 
-        private void ShowUI<T>(AUIBase ui,Stack<T> stack = null) where T : AUIBase
+        private void ShowUI<T>(AUIBase ui, Stack<T> stack = null) where T : AUIBase
         {
-            if(stack != null)
+            if (stack != null)
             {
                 if (stack.Count > 0)
                 {
@@ -215,7 +229,7 @@ namespace BlueUIFrame.Easy
             HandleState(ui);
         }
 
-        private void HandleState<T>(T ui) where T:AUIBase
+        private void HandleState<T>(T ui) where T : AUIBase
         {
             IUIState stateFunction = (IUIState)ui;
             switch (ui.uiState)
@@ -231,11 +245,11 @@ namespace BlueUIFrame.Easy
             }
         }
 
-        private void HideUI<T>(UILayer showLayer,UILayer targetLayer, Stack<T> stack = null) where T : AUIBase
+        private void HideUI<T>(UILayer showLayer, UILayer targetLayer, Stack<T> stack = null) where T : AUIBase
         {
             if (showLayer <= targetLayer)
             {
-                if(stack != null)
+                if (stack != null)
                 {
                     if (stack.Count > 0)
                     {
@@ -249,7 +263,7 @@ namespace BlueUIFrame.Easy
             }
         }
 
-        private bool CloseUI<T>(Stack<T> stack) where T:AUIBase
+        private bool CloseUI<T>(Stack<T> stack) where T : AUIBase
         {
             if (stack.Count > 0)
             {

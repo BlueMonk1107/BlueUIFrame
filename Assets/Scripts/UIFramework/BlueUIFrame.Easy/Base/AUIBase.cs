@@ -11,13 +11,10 @@ namespace BlueUIFrame.Easy
 
         public UIStateEnum uiState { get; protected set; }
 
-        public bool IsMainUI { get; private set; }
-
-        protected void InitUI(EUiId id, bool isMainUI = false)
+        protected void InitUI(EUiId id)
         {
             ID = id;
             uiState = UIStateEnum.INIT;
-            IsMainUI = isMainUI;
         }
 
         public abstract UILayer GetLayer();

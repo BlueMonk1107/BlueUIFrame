@@ -10,7 +10,7 @@ namespace BlueUIFrame.Easy.Demo
         public override void Init()
         {
             base.Init();
-            InitUI(EUiId.DIALOG, false);
+            InitUI(EUiId.DIALOG);
             UITool.AddBtnListener(transform, () => { UIManager.Instance.Back(); }, "Back");
             UITool.AddBtnListener(transform, () => { UIManager.Instance.ShowUI(EUiId.VIEW_ONE); }, "One");
             UITool.AddBtnListener(transform, () => { UIManager.Instance.ShowUI(EUiId.SIDE_VIEW); }, "Side");

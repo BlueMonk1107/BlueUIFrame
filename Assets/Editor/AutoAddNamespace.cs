@@ -46,7 +46,7 @@ namespace Babybus.Uno
         {
             var sb = new ScriptBuilder();
             //添加命名空间
-            sb.WriteLine("namespace BlueUIFrame.Demo");
+            sb.WriteLine("namespace BlueUIFrame.Easy");
             sb.WriteCurlyBrackets();
             sb.Indent++;
 

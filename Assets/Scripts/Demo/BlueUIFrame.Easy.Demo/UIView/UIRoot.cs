@@ -6,7 +6,6 @@ namespace BlueUIFrame.Easy.Demo
 {
     public class UIRoot : MonoBehaviour
     {
-
         // Use this for initialization
         void Start()
         {
