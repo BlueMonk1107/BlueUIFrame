@@ -7,7 +7,7 @@ namespace BlueUIFrame.Easy.Demo
 {
     public class SideView : OverlayUI
     {
-        public override void Init()
+        protected override void Init()
         {
             base.Init();
             InitUI(EUiId.SIDE_VIEW);

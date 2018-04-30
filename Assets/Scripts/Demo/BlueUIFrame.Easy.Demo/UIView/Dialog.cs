@@ -8,7 +8,7 @@ namespace BlueUIFrame.Easy.Demo
 {
     public class Dialog : TopUI
     {
-        public override void Init()
+        protected override void Init()
         {
             base.Init();
             InitUI(EUiId.DIALOG, NormalInfoDataHandler.NAME);

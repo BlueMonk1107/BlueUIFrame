@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BlueUIFrame.Easy
 {
-    public class TopUI : AUIBase
+    public class TopUI : UIBase
     {
         public override UILayer GetLayer()
         {

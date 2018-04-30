@@ -8,7 +8,7 @@ namespace BlueUIFrame.Easy.Demo
 {
     public class MainUI : BasicUI
     {
-        public override void Init()
+        protected override void Init()
         {
             base.Init();
             InitUI(EUiId.MAIN_UI, NormalInfoDataHandler.NAME);

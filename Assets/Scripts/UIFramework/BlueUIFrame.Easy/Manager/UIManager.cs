@@ -152,11 +152,11 @@ namespace BlueUIFrame.Easy
             ShowUI<BasicUI>(data.BasicUI);
             if (data.OverlayUIStack.Count > 0)
             {
-                HandleState(data.OverlayUIStack.Peek());
+                data.OverlayUIStack.Peek().UIState = UIStateEnum.SHOW;
             }
             if (data.TopUIStack.Count > 0)
             {
-                HandleState(data.TopUIStack.Peek());
+                data.TopUIStack.Peek().UIState = UIStateEnum.SHOW;
             }
         }
 
@@ -192,26 +192,11 @@ namespace BlueUIFrame.Easy
             {
                 if (stack.Count > 0)
                 {
-                    stack.Peek().Hide();
+                    stack.Peek().UIState = UIStateEnum.HIDE;
                 }
                 stack.Push((T)ui);
             }
-            HandleState(ui);
-        }
-
-        private void HandleState<T>(T ui) where T : AUIBase
-        {
-            switch (ui.uiState)
-            {
-                case UIStateEnum.NOTINIT:
-                    UILayerManager.Instance.SetUILayer(ui);
-                    ui.Init();
-                    ui.Show();
-                    break;
-                case UIStateEnum.HIDE:
-                    ui.Show();
-                    break;
-            }
+            ui.UIState = UIStateEnum.SHOW;
         }
 
         private void HideUI<T>(UILayer showLayer, UILayer targetLayer, Stack<T> stack = null) where T : AUIBase
@@ -222,12 +207,12 @@ namespace BlueUIFrame.Easy
                 {
                     if (stack.Count > 0)
                     {
-                        stack.Peek().Hide();
+                        stack.Peek().UIState = UIStateEnum.HIDE;
                     }
                 }
                 else
                 {
-                    data.BasicUI.Hide();
+                    data.BasicUI.UIState = UIStateEnum.HIDE;
                 }
             }
         }
@@ -236,7 +221,7 @@ namespace BlueUIFrame.Easy
         {
             if (stack.Count > 0)
             {
-                stack.Pop().Hide();
+                stack.Pop().UIState = UIStateEnum.HIDE;
                 return true;
             }
 
