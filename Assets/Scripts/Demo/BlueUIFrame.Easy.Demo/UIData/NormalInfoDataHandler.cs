@@ -2,16 +2,21 @@
 // 作者：BlueMonk
 // 描述：PureMVC-based UI framework. 
 //=======================================================
+
+using System;
 using UnityEngine;
 using System.Collections;
 
 namespace BlueUIFrame.Easy.Demo
 {
-    public class NormalInfoProxy : IProxy
+    public class  NormalInfoDataHandler : IDataHandler
     {
         public const string NAME = "NormalInfoProxy";
         private NormalInfoData data;
-        public NormalInfoProxy()
+
+        public Action UpdateShow { get; set; }
+
+        public NormalInfoDataHandler()
         {
             InitData();
         }
@@ -29,6 +34,10 @@ namespace BlueUIFrame.Easy.Demo
         public void UpdataData(IData newData)
         {
             data = (NormalInfoData)newData;
+            if (UpdateShow != null)
+            {
+                UpdateShow();
+            }
         }
 
         public string GetName()

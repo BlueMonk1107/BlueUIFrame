@@ -3,32 +3,22 @@
 // 描述：PureMVC-based UI framework. 
 //=======================================================
 using UnityEngine;
-using System.Collections;
-using PureMVC.Interfaces;
-using PureMVC.Patterns;
 using System.Collections.Generic;
 using System;
 using BlueUIFrame.Easy.Utility;
 
 namespace BlueUIFrame.Easy
 {
-    public class UIManager : SingletonMono<UIManager>
+    public class UIManager : SingletonMono<UIManager>, IUIManager
     {
         private Stack<UIHandler> uiStack;
         private Dictionary<EUiId, Transform> prefabPool;
-        protected UIProxyManager proxyManager;
-        public UIProxyManager ProxyManager
+        public IUIDataHandlerManager DataHandlerManager { get; protected set; }
+        public IUILayerManager LayerManager
         {
             get
             {
-                return proxyManager;
-            }
-        }
-        public UILayerManager LayerManager
-        {
-            get
-            {
-                return GetComponent<UILayerManager>();
+                return GetComponent<IUILayerManager>();
             }
         }
 
@@ -105,36 +95,16 @@ namespace BlueUIFrame.Easy
 
     public struct UIData
     {
-        private BasicUI basicUI;
-        public BasicUI BasicUI
-        {
-            get
-            {
-                return basicUI;
-            }
-        }
-        private Stack<OverlayUI> overlayUIStack;
-        public Stack<OverlayUI> OverlayUIStack
-        {
-            get
-            {
-                return overlayUIStack;
-            }
-        }
-        private Stack<TopUI> topUIStack;
-        public Stack<TopUI> TopUIStack
-        {
-            get
-            {
-                return topUIStack;
-            }
-        }
+        public BasicUI BasicUI { get; private set; }
+        public Stack<OverlayUI> OverlayUIStack { get; private set; }
+        
+        public Stack<TopUI> TopUIStack { get; private set; }
 
         public UIData(BasicUI basic)
         {
-            basicUI = basic;
-            overlayUIStack = new Stack<OverlayUI>();
-            topUIStack = new Stack<TopUI>();
+            BasicUI = basic;
+            OverlayUIStack = new Stack<OverlayUI>();
+            TopUIStack = new Stack<TopUI>();
         }
     }
 
@@ -222,7 +192,7 @@ namespace BlueUIFrame.Easy
             {
                 if (stack.Count > 0)
                 {
-                    ((IUIState)stack.Peek()).Hide();
+                    stack.Peek().Hide();
                 }
                 stack.Push((T)ui);
             }
@@ -231,16 +201,15 @@ namespace BlueUIFrame.Easy
 
         private void HandleState<T>(T ui) where T : AUIBase
         {
-            IUIState stateFunction = (IUIState)ui;
             switch (ui.uiState)
             {
-                case UIStateEnum.INIT:
+                case UIStateEnum.NOTINIT:
                     UILayerManager.Instance.SetUILayer(ui);
-                    stateFunction.Init();
-                    stateFunction.Show();
+                    ui.Init();
+                    ui.Show();
                     break;
                 case UIStateEnum.HIDE:
-                    stateFunction.Show();
+                    ui.Show();
                     break;
             }
         }
@@ -253,7 +222,7 @@ namespace BlueUIFrame.Easy
                 {
                     if (stack.Count > 0)
                     {
-                        ((IUIState)stack.Peek()).Hide();
+                        stack.Peek().Hide();
                     }
                 }
                 else
@@ -267,7 +236,7 @@ namespace BlueUIFrame.Easy
         {
             if (stack.Count > 0)
             {
-                ((IUIState)stack.Pop()).Hide();
+                stack.Pop().Hide();
                 return true;
             }
 

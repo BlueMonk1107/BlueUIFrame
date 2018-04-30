@@ -7,8 +7,9 @@ using System.Collections;
 
 namespace BlueUIFrame.Easy
 {
-    public class Proxy
+    public interface IUIDataHandlerManager
     {
-
+        void RemoveHandler(string handlerName);
+        IDataHandler GetHandler(string handlerName);
     }
 }

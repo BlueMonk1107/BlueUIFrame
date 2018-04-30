@@ -6,7 +6,7 @@ using BlueUIFrame.Easy.Utility;
 
 namespace BlueUIFrame.Easy
 {
-    public class UILayerManager : SingletonMono<UILayerManager>
+    public class UILayerManager : SingletonMono<UILayerManager>, IUILayerManager
     {
         public Dictionary<UILayer, GameObject> UILayerObjDic { get; private set; }
 

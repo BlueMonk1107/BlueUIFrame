@@ -7,11 +7,11 @@ using System.Collections;
 
 namespace BlueUIFrame.Easy.Demo
 {
-    public class ProxyManager : UIProxyManager
+    public class DataHandlerManager : UIDataHandlerManager
     {
-        protected override void RegisterProxy()
+        protected override void RegisterHandler()
         {
-            proxyDic.Add(NormalInfoProxy.NAME, new NormalInfoProxy());
+            handlerDic.Add(NormalInfoDataHandler.NAME, new NormalInfoDataHandler());
         }
     }
 }

@@ -7,11 +7,12 @@ using System.Collections;
 
 namespace BlueUIFrame.Easy
 {
-    public interface IProxy
+    public interface IUIManager
     {
-        string GetName();
-        void InitData();
-        IData GetData();
-        void UpdataData(IData newData);
+        IUIDataHandlerManager DataHandlerManager { get; }
+        IUILayerManager LayerManager { get; }
+        void InitUISystem();
+        void ShowUI(EUiId id);
+        void Back();
     }
 }

@@ -9,12 +9,12 @@ namespace BlueUIFrame.Easy.Demo
         // Use this for initialization
         void Start()
         {
-            if (GetComponent<UIManager>() == null)
+            if (GetComponent<UIManagerDemo>() == null)
             {
-                gameObject.AddComponent<UIManager>();
+                gameObject.AddComponent<UIManagerDemo>();
             }
-            UIManager.Instance.InitUISystem();
-            UIManager.Instance.ShowUI(EUiId.MAIN_UI);
+            UIManagerDemo.Instance.InitUISystem();
+            UIManagerDemo.Instance.ShowUI(EUiId.MAIN_UI);
         }
     }
 }

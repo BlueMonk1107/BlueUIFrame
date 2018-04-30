@@ -7,12 +7,12 @@ using System.Collections;
 
 namespace BlueUIFrame.Easy.Demo
 {
-    public class UIManager : Easy.UIManager
+    public class UIManagerDemo : Easy.UIManager
     {
         public override void InitUISystem()
         {
             base.InitUISystem();
-            proxyManager = new ProxyManager();
+            DataHandlerManager = new DataHandlerManager();
         }
     }
 }
