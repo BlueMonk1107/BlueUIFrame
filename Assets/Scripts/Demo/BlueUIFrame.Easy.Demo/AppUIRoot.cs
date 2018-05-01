@@ -22,5 +22,11 @@ namespace BlueUIFrame.Easy.Demo
                 throw new Exception("AppUIRoot script must be mounted on canvas");
             }
         }
+
+        protected override void InitUISystem()
+        {
+            base.InitUISystem();
+            DataHandlerManager = new DataHandlerManager();
+        }
     }
 }

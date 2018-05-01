@@ -16,7 +16,7 @@ namespace Babybus.Uno
         private static readonly string AuthorCode =
         "//=======================================================\r\n"
         + "// 作者：BlueMonk\r\n"
-        + "// 描述：PureMVC-based UI framework. \r\n"
+        + "// 描述：基于UGUI的简易UI框架 \r\n"
         + "//=======================================================\r\n";
 
         public static readonly string headCode =

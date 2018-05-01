@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using BlueUIFrame.Easy;
 
 /// <summary>
 /// 界面在左侧从竖直一条线打开成界面

@@ -1,9 +1,22 @@
-﻿using System.Collections;
+﻿//=======================================================
+// 作者：BlueMonk
+// 描述：PureMVC-based UI framework. 
+//=======================================================
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace BlueUIFrame.Easy.Demo
 {
+    /// <summary>
+    /// UI系统初始化类
+    /// <para>
+    /// 启动系统需要继承此类，并实现InitUISystem方法，在方法内初始化DataHandlerManager
+    /// </para>
+    /// <para>
+    /// 脚本需要挂载在Canvas组件的物体上
+    /// </para>
+    /// </summary>
     public class UIRoot : AUIRoot
     {
         // Use this for initialization
@@ -15,7 +28,6 @@ namespace BlueUIFrame.Easy.Demo
         protected override void InitUISystem()
         {
             UIManager = new UIManager();
-            DataHandlerManager = new DataHandlerManager();
             if (LayerManager == null)
             {
                 LayerManager = gameObject.AddComponent<UILayerManager>();

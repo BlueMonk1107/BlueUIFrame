@@ -1,6 +1,6 @@
 //=======================================================
 // 作者：BlueMonk
-// 描述：PureMVC-based UI framework. 
+// 描述：基于UGUI的简易UI框架
 //=======================================================
 using UnityEngine;
 using System.Collections;
@@ -10,6 +10,10 @@ using System;
 
 namespace BlueUIFrame.Easy
 {
+    /// <summary>
+    /// 数据处理器对象管理类
+    /// <para>使用时，需要继承此类，并实现RegisterHandler()方法，初始化所有自定义的数据处理器</para>
+    /// </summary>
     public abstract class UIDataHandlerManager: IUIDataHandlerManager
     {
         protected Dictionary<string,IDataHandler> handlerDic;
@@ -19,7 +23,9 @@ namespace BlueUIFrame.Easy
             handlerDic = new Dictionary<string, IDataHandler>();
             RegisterHandler();
         }
-
+        /// <summary>
+        /// 初始化所有自定义的数据处理器
+        /// </summary>
         protected abstract void RegisterHandler();
 
         public void RemoveHandler(string handlerName)
