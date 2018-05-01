@@ -40,8 +40,6 @@ namespace BlueUIFrame.Easy
             if (ui == null)
                 throw new Exception("Can't find AUIBase component");
 
-            
-
             if (ui.GetLayer() == UILayer.BasicUI)
             {
                 UIHandler newHandler = new UIHandler(ui);
@@ -49,20 +47,20 @@ namespace BlueUIFrame.Easy
                 {
                     uiStack.Peek().Hide(ui.GetLayer());
                 }
-                AddListener(ui, newHandler);
+                AddListener(ui,id, newHandler);
                 newHandler.Show(ui);
                 uiStack.Push(newHandler);
             }
             else
             {
-                AddListener(ui, uiStack.Peek());
+                AddListener(ui,id, uiStack.Peek());
                 uiStack.Peek().Show(ui);
             }
         }
 
-        private void AddListener(AUIBase ui,UIHandler handler)
+        private void AddListener(AUIBase ui, EUiId id,UIHandler handler)
         {
-            handler.AddListener(ui, ob=>UIInitAction(ui.ID.ToString(),ob), isActive => UIActiveAction(ui.ID.ToString(), isActive));
+            handler.AddListener(ui, ob=>UIInitAction(id.ToString(),ob), isActive => UIActiveAction(id.ToString(), isActive));
         }
 
         public void Back()

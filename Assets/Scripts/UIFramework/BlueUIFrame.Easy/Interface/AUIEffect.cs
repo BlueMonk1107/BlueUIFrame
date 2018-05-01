@@ -25,10 +25,7 @@ public abstract class AUIEffect : MonoBehaviour
         get { return FindObjectOfType<CanvasScaler>().referenceResolution.x; }
     }
 
-    protected Vector2 DefaultAnchorPos
-    {
-        get { return rectTrans.anchoredPosition; }
-    }
+    protected Vector2 DefaultAnchorPos { get; set; }
     protected float offset;
 
     protected Action onEnterComplete;

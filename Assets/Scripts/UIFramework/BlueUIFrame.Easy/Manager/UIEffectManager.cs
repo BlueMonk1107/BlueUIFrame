@@ -20,6 +20,15 @@ namespace BlueUIFrame.Easy
             if (effect != null)
             {
                 effectDic[uiId] = effect;
+                effect.AddEnterListener(() =>
+                {
+                    effect.uiShowState = UIShowState.Old;
+                });
+                effect.AddExitListener(() =>
+                {
+                    effect.uiShowState = UIShowState.New;
+                    SetActive(uiId, false);
+                });
                 return true;
             }
             return false;
@@ -29,11 +38,25 @@ namespace BlueUIFrame.Easy
         {
             if (effectDic.ContainsKey(uiId))
             {
-                effectDic[uiId].gameObject.SetActive(isActive);
+                if (isActive)
+                {
+                    SetActive(uiId, true);
+                    effectDic[uiId].Enter();
+                }
+                else
+                {
+                    effectDic[uiId].Exit();
+                }
+                
                 return true;
             }
 
             return false;
+        }
+
+        private void SetActive(string uiId,bool isActive)
+        {
+            effectDic[uiId].gameObject.SetActive(isActive);
         }
     }
 }

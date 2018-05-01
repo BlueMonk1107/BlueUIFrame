@@ -10,21 +10,30 @@ public class SlideFullScreenUI : AUIEffect
 {
     protected void FromRight()
     {
+        InitPos();
         offset = DefaultScreenWidth + RectTrans.sizeDelta.x;
         RectTrans.anchoredPosition = DefaultAnchorPos + Vector2.right * offset;
         RectTrans.DOAnchorPos(DefaultAnchorPos, UIEffectTime.SLIDE_FROM_Right).SetEase(Ease.Linear).OnComplete(() =>
         {
-            onEnterComplete();
+            if (onEnterComplete != null)
+            {
+                onEnterComplete();
+            }
+           
         });
     }
 
     protected void FromLeft()
     {
+        InitPos();
         offset = DefaultScreenWidth + RectTrans.sizeDelta.x;
         RectTrans.anchoredPosition = DefaultAnchorPos - Vector2.right * offset;
         RectTrans.DOAnchorPos(DefaultAnchorPos, UIEffectTime.SLIDE_FROM_Right).SetEase(Ease.Linear).OnComplete(() =>
         {
-            onEnterComplete();
+            if (onEnterComplete != null)
+            {
+                onEnterComplete();
+            }
         });
     }
 
@@ -33,7 +42,10 @@ public class SlideFullScreenUI : AUIEffect
         Vector2 targetAnchorPos = RectTrans.anchoredPosition + Vector2.right * offset;
         RectTrans.DOAnchorPos(targetAnchorPos, UIEffectTime.SLIDE_FROM_Right).SetEase(Ease.Linear).OnComplete(() =>
         {
-            OnExitComplete();
+            if (OnExitComplete != null)
+            {
+                OnExitComplete();
+            }
         });
     }
 
@@ -42,13 +54,21 @@ public class SlideFullScreenUI : AUIEffect
         Vector2 targetAnchorPos = RectTrans.anchoredPosition - Vector2.right * offset;
         RectTrans.DOAnchorPos(targetAnchorPos, UIEffectTime.SLIDE_FROM_Right).SetEase(Ease.Linear).OnComplete(() =>
         {
-            OnExitComplete();
+            if (OnExitComplete != null)
+            {
+                OnExitComplete();
+            }
         });
+    }
+
+    private void InitPos()
+    {
+        DefaultAnchorPos = Vector2.zero;
     }
 
     private void FromRightButtonWaggle()
     {
-        
+
     }
 
     public override void Enter()
