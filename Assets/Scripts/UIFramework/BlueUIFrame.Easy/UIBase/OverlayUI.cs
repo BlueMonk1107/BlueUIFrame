@@ -10,9 +10,5 @@ namespace BlueUIFrame.Easy
         {
             return UILayer.OverlayUI;
         }
-        protected override IUIDataHandlerManager GetDataHandlerManager()
-        {
-            return UIManager.Instance.DataHandlerManager;
-        }
     }
 }

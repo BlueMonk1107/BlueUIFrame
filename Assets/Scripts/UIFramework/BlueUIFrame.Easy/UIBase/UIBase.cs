@@ -6,11 +6,17 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using Object = UnityEngine.Object;
 
 namespace BlueUIFrame.Easy
 {
     public class UIBase : AUIBase
     {
+        protected IDataHandler dataHandler;
+        private UIStateEnum uiState;
+        private Func<Object, bool> InitAction;
+        private Func<bool, bool> ObjectActiveAction;
+
         protected void InitUI(EUiId id, string dataHandlerName = null)
         {
             ID = id;
@@ -20,6 +26,17 @@ namespace BlueUIFrame.Easy
                 dataHandler = GetDataHandlerManager().GetHandler(dataHandlerName);
                 dataHandler.UpdateShow += UpdateShow;
             }
+        }
+
+        protected override void SetUIState(UIStateEnum state)
+        {
+            HandleState(uiState, state);
+            uiState = state;
+        }
+
+        protected override UIStateEnum GetUIState()
+        {
+            return uiState;
         }
 
         protected override void HandleState(UIStateEnum currentState, UIStateEnum targetState)
@@ -45,6 +62,10 @@ namespace BlueUIFrame.Easy
 
         protected virtual void Init()
         {
+            if (InitAction != null)
+            {
+                InitAction(gameObject);
+            }
         }
 
         protected virtual void Show()
@@ -62,6 +83,16 @@ namespace BlueUIFrame.Easy
         {
         }
 
+        public override void AddInitListener(Func<Object, bool> action)
+        {
+            InitAction = action;
+        }
+
+        public override void AddActiveListener(Func<bool, bool> action)
+        {
+            ObjectActiveAction = action;
+        }
+
         public override UILayer GetLayer()
         {
             throw new System.NotImplementedException();
@@ -69,7 +100,7 @@ namespace BlueUIFrame.Easy
 
         protected override IUIDataHandlerManager GetDataHandlerManager()
         {
-            throw new System.NotImplementedException();
+            return AUIRoot.DataHandlerManager;
         }
 
         protected override void SetActive(bool isShow)
@@ -82,7 +113,10 @@ namespace BlueUIFrame.Easy
                 }
                 else
                 {
-                    ObjectActiveAction(isShow);
+                    if (!ObjectActiveAction(isShow))
+                    {
+                        gameObject.SetActive(isShow);
+                    }
                 }
             }
             catch (Exception)

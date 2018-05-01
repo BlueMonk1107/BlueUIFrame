@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using BlueUIFrame.Easy.Demo;
 using UnityEngine;
 
 namespace BlueUIFrame.Easy
@@ -9,11 +10,6 @@ namespace BlueUIFrame.Easy
         public override UILayer GetLayer()
         {
             return UILayer.BasicUI;
-        }
-
-        protected override IUIDataHandlerManager GetDataHandlerManager()
-        {
-            return UIManager.Instance.DataHandlerManager;
         }
     }
 }

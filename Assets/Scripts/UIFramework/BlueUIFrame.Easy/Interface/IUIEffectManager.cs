@@ -5,14 +5,11 @@
 using UnityEngine;
 using System.Collections;
 
-namespace BlueUIFrame.Easy.Demo
+namespace BlueUIFrame.Easy
 {
-    public class UIManagerDemo : Easy.UIManager
+    public interface IUIEffectManager
     {
-        public override void InitUISystem()
-        {
-            base.InitUISystem();
-            DataHandlerManager = new DataHandlerManager();
-        }
+        bool InitFun(string uiId, Object uiBase);
+        bool ActiveFun(string uiId, bool isActive);
     }
 }

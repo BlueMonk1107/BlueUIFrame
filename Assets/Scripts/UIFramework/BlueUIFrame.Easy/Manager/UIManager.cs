@@ -6,40 +6,31 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using BlueUIFrame.Easy.Utility;
+using Object = UnityEngine.Object;
 
 namespace BlueUIFrame.Easy
 {
-    public class UIManager : SingletonMono<UIManager>, IUIManager
+    public class UIManager : IUIManager
     {
+        private Func<string,Object, bool> UIInitAction;
+        private Func<string,bool, bool> UIActiveAction;
         private Stack<UIHandler> uiStack;
         private Dictionary<EUiId, Transform> prefabPool;
-        public IUIDataHandlerManager DataHandlerManager { get; protected set; }
-        public IUILayerManager LayerManager
-        {
-            get
-            {
-                return GetComponent<IUILayerManager>();
-            }
-        }
 
-        public virtual void InitUISystem()
+        public UIManager()
         {
             uiStack = new Stack<UIHandler>();
             prefabPool = new Dictionary<EUiId, Transform>();
-
-            AddManager<UILayerManager>(gameObject).Init();
         }
 
-        private T AddManager<T>(GameObject obj) where T : MonoBehaviour
+        public void AddUIInitListener(Func<string,Object, bool> action)
         {
-            if (GetComponent<T>() == null)
-            {
-                return obj.AddComponent<T>();
-            }
-            else
-            {
-                return obj.GetComponent<T>();
-            }
+            UIInitAction = action;
+        }
+
+        public void AddUIActiveListener(Func<string,bool, bool> action)
+        {
+            UIActiveAction = action;
         }
 
         public void ShowUI(EUiId id)
@@ -49,20 +40,29 @@ namespace BlueUIFrame.Easy
             if (ui == null)
                 throw new Exception("Can't find AUIBase component");
 
+            
+
             if (ui.GetLayer() == UILayer.BasicUI)
             {
-                UIHandler newData = new UIHandler(ui);
+                UIHandler newHandler = new UIHandler(ui);
                 if (uiStack.Count > 0)
                 {
                     uiStack.Peek().Hide(ui.GetLayer());
                 }
-                newData.Show(ui);
-                uiStack.Push(newData);
+                AddListener(ui, newHandler);
+                newHandler.Show(ui);
+                uiStack.Push(newHandler);
             }
             else
             {
+                AddListener(ui, uiStack.Peek());
                 uiStack.Peek().Show(ui);
             }
+        }
+
+        private void AddListener(AUIBase ui,UIHandler handler)
+        {
+            handler.AddListener(ui, ob=>UIInitAction(ui.ID.ToString(),ob), isActive => UIActiveAction(ui.ID.ToString(), isActive));
         }
 
         public void Back()
@@ -82,7 +82,7 @@ namespace BlueUIFrame.Easy
             {
                 if (!prefabPool.ContainsKey(id) || prefabPool[id] == null)
                 {
-                    return Instantiate(Resources.Load<Transform>(path), transform);
+                    prefabPool[id] = UITool.SpawnUI(path);
                 }
                 return prefabPool[id];
             }
@@ -97,7 +97,7 @@ namespace BlueUIFrame.Easy
     {
         public BasicUI BasicUI { get; private set; }
         public Stack<OverlayUI> OverlayUIStack { get; private set; }
-        
+
         public Stack<TopUI> TopUIStack { get; private set; }
 
         public UIData(BasicUI basic)
@@ -183,6 +183,15 @@ namespace BlueUIFrame.Easy
                 {
                     return false;
                 }
+            }
+        }
+
+        public void AddListener(AUIBase ui,Func<Object, bool> initAction,Func<bool, bool> activeAction)
+        {
+            if (ui.UIState == UIStateEnum.NOTINIT)
+            {
+                ui.AddInitListener(initAction);
+                ui.AddActiveListener(activeAction);
             }
         }
 

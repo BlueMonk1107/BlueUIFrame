@@ -12,9 +12,9 @@ namespace BlueUIFrame.Easy.Demo
         {
             base.Init();
             InitUI(EUiId.DIALOG, NormalInfoDataHandler.NAME);
-            UITool.AddBtnListener(transform, () => { UIManagerDemo.Instance.Back(); }, "Back");
-            UITool.AddBtnListener(transform, () => { UIManagerDemo.Instance.ShowUI(EUiId.VIEW_ONE); }, "One");
-            UITool.AddBtnListener(transform, () => { UIManagerDemo.Instance.ShowUI(EUiId.SIDE_VIEW); }, "Side");
+            UITool.AddBtnListener(transform, () => { AppUIRoot.UIManager.Back(); }, "Back");
+            UITool.AddBtnListener(transform, () => { AppUIRoot.UIManager.ShowUI(EUiId.VIEW_ONE); }, "One");
+            UITool.AddBtnListener(transform, () => { AppUIRoot.UIManager.ShowUI(EUiId.SIDE_VIEW); }, "Side");
             UITool.AddBtnListener(transform, () =>
             {
                 NormalInfoData data = GetData<NormalInfoData>();

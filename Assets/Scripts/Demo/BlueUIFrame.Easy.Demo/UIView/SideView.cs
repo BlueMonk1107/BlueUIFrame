@@ -11,9 +11,9 @@ namespace BlueUIFrame.Easy.Demo
         {
             base.Init();
             InitUI(EUiId.SIDE_VIEW);
-            UITool.AddBtnListener(transform, () => { UIManagerDemo.Instance.Back(); }, "Back");
-            UITool.AddBtnListener(transform, () => { UIManagerDemo.Instance.ShowUI(EUiId.VIEW_TWO); }, "Two");
-            UITool.AddBtnListener(transform, () => { UIManagerDemo.Instance.ShowUI(EUiId.VIEW_ONE); }, "One");
+            UITool.AddBtnListener(transform, () => { AppUIRoot.UIManager.Back(); }, "Back");
+            UITool.AddBtnListener(transform, () => { AppUIRoot.UIManager.ShowUI(EUiId.VIEW_TWO); }, "Two");
+            UITool.AddBtnListener(transform, () => { AppUIRoot.UIManager.ShowUI(EUiId.VIEW_ONE); }, "One");
         }
     }
 }
