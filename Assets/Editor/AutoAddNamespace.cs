@@ -16,7 +16,7 @@ namespace Babybus.Uno
         private static readonly string AuthorCode =
         "//=======================================================\r\n"
         + "// 作者：BlueMonk\r\n"
-        + "// 描述：A simple UI framework For Unity . \r\n"
+        + "// 描述：基于UGUI的简易UI框架 \r\n"
         + "//=======================================================\r\n";
 
         public static readonly string headCode =
@@ -46,7 +46,7 @@ namespace Babybus.Uno
         {
             var sb = new ScriptBuilder();
             //添加命名空间
-            sb.WriteLine("namespace BlueUIFrame");
+            sb.WriteLine("namespace BlueUIFrame.Easy");
             sb.WriteCurlyBrackets();
             sb.Indent++;
 

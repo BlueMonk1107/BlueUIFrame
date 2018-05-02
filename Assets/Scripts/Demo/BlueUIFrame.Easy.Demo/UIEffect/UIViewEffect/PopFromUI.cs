@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using BlueUIFrame.Easy;
 
 public class PopFromUI : AUIEffect {
     private Vector3 sourcePosition;

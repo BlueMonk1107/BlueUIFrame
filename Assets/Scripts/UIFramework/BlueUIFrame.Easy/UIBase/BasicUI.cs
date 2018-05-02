@@ -1,4 +1,8 @@
-﻿using System;
+﻿//=======================================================
+// 作者：BlueMonk
+// 描述：基于UGUI的简易UI框架
+//=======================================================
+using System;
 using System.Reflection;
 using BlueUIFrame.Easy.Demo;
 using UnityEngine;

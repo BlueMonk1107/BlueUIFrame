@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿//=======================================================
+// 作者：BlueMonk
+// 描述：基于UGUI的简易UI框架
+//=======================================================
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +12,12 @@ namespace BlueUIFrame.Easy.Utility
 {
     public class UITool
     {
-
+        /// <summary>
+        /// 添加button的监听
+        /// </summary>
+        /// <param name="parent">开始查找Button组件的父物体</param>
+        /// <param name="action">点击事件</param>
+        /// <param name="buttonName">带有button组件的物体名称，若未空，即为父物体挂载了Button组件</param>
         public static void AddBtnListener(Transform parent, UnityAction action, string buttonName = "")
         {
             if (parent == null || action == null)
@@ -95,7 +104,11 @@ namespace BlueUIFrame.Easy.Utility
                 return null;
             }
         }
-
+        /// <summary>
+        /// 生成UI对象
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static Transform SpawnUI(string path)
         {
             Transform source = Resources.Load<Transform>(path);
