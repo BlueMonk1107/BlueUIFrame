@@ -1,12 +1,12 @@
 ﻿//=======================================================
 // 作者：BlueMonk
-// 描述：PureMVC-based UI framework. 
+// 描述：基于UGUI的简易UI框架
 //=======================================================
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BlueUIFrame.Easy.Demo
+namespace BlueUIFrame.Easy
 {
     /// <summary>
     /// UI系统初始化类
