@@ -56,11 +56,4 @@ namespace BlueUIFrame.Easy
             rect.localPosition = Vector3.zero;
         }
     }
-
-    public enum UILayer
-    {
-        BasicUI,
-        OverlayUI,
-        TopUI
-    }
 }

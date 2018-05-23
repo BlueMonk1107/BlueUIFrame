@@ -29,7 +29,7 @@ namespace BlueUIFrame.Easy
         /// 根据UI的ID显示UI
         /// </summary>
         /// <param name="id"></param>
-        void ShowUI(EUiId id);
+        void ShowUI<T>(T id);
         /// <summary>
         /// 返回上一界面
         /// </summary>

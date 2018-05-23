@@ -18,7 +18,7 @@ namespace BlueUIFrame.Easy
         /// <summary>
         /// 当前UI的名称ID
         /// </summary>
-        public EUiId ID { get; protected set; }
+        public string ID { get; protected set; }
         /// <summary>
         /// UI的状态：未初始化，初始化，显示，隐藏
         /// </summary>

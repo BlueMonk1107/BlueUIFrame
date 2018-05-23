@@ -38,9 +38,9 @@ namespace BlueUIFrame.Easy
         /// </summary>
         /// <param name="id"></param>
         /// <param name="dataHandlerName"></param>
-        protected void InitUI(EUiId id, string dataHandlerName = null)
+        protected void InitUI<T>(T id, string dataHandlerName = null)
         {
-            ID = id;
+            ID = id.ToString();
             uiState = UIStateEnum.NOTINIT;
             if (!string.IsNullOrEmpty(dataHandlerName))
             {
@@ -189,13 +189,5 @@ namespace BlueUIFrame.Easy
             }
             return (T)dataHandler.GetData();
         }
-    }
-
-    public enum UIStateEnum
-    {
-        NOTINIT,
-        INIT,
-        SHOW,
-        HIDE
     }
 }

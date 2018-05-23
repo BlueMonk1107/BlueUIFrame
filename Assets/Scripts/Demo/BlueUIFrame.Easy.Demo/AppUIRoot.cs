@@ -15,7 +15,7 @@ namespace BlueUIFrame.Easy.Demo
             if (GetComponent<Canvas>() != null)
             {
                 base.Start();
-                UIManager.ShowUI(EUiId.MAIN_UI);
+                UIManager.ShowUI(EUiId.MAIN_UI.ToString());
             }
             else
             {
@@ -27,6 +27,7 @@ namespace BlueUIFrame.Easy.Demo
         {
             base.InitUISystem();
             DataHandlerManager = new DataHandlerManager();
+            new UIPathManager();
         }
     }
 }

@@ -1,30 +1,29 @@
-﻿//=======================================================
-// 作者：BlueMonk
-// 描述：基于UGUI的简易UI框架
 //=======================================================
+// 作者：BlueMonk
+// 描述：基于UGUI的简易UI框架 
+//=======================================================
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace BlueUIFrame.Easy
 {
     /// <summary>
-    /// UI路径管理脚本
+    /// UI路径管理接口
     /// <para>
     /// 类似与配置文件，需要手动在类的字典UIPathDic里配置路径
     /// </para>
     /// </summary>
-    public static class UIPathManager
+    public abstract class AUIPathManager
     {
+        protected static Dictionary<string, string> UIPathDic = new Dictionary<string, string>();
 
-        private static readonly Dictionary<EUiId, string> UIPathDic = new Dictionary<EUiId, string>()
+        protected abstract void InitPathDic();
+
+        public AUIPathManager()
         {
-            {EUiId.MAIN_UI, "MainUI"},
-            {EUiId.VIEW_ONE, "ViewOne"},
-            {EUiId.VIEW_TWO, "ViewTwo"},
-            {EUiId.SIDE_VIEW, "Side"},
-            {EUiId.DIALOG, "Dialog"}
-        };
+            InitPathDic();
+        }
 
         /// <summary>
         /// 根据ID获取层级
@@ -32,7 +31,7 @@ namespace BlueUIFrame.Easy
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static string GetPath(EUiId id)
+        public static string GetPath(string id)
         {
             if (UIPathDic.ContainsKey(id))
             {
@@ -44,14 +43,5 @@ namespace BlueUIFrame.Easy
                 return null;
             }
         }
-    }
-
-    public enum EUiId
-    {
-        MAIN_UI,
-        VIEW_ONE,
-        VIEW_TWO,
-        SIDE_VIEW,
-        DIALOG
     }
 }

@@ -18,12 +18,12 @@ namespace BlueUIFrame.Easy
         private Func<string,Object, bool> UIInitAction;
         private Func<string,bool, bool> UIActiveAction;
         private Stack<UIHandler> uiStack;
-        private Dictionary<EUiId, Transform> prefabPool;
+        private Dictionary<string, Transform> prefabPool;
 
         public UIManager()
         {
             uiStack = new Stack<UIHandler>();
-            prefabPool = new Dictionary<EUiId, Transform>();
+            prefabPool = new Dictionary<string, Transform>();
         }
         /// <summary>
         /// 添加UI初始化状态的监听
@@ -45,9 +45,9 @@ namespace BlueUIFrame.Easy
         /// 根据UI的ID显示UI
         /// </summary>
         /// <param name="id"></param>
-        public void ShowUI(EUiId id)
+        public virtual void ShowUI<T>(T id)
         {
-            Transform uiTrans = SpawnUI(id);
+            Transform uiTrans = SpawnUI(id.ToString());
             AUIBase ui = uiTrans.GetComponent<AUIBase>();
             if (ui == null)
                 throw new Exception("Can't find AUIBase component");
@@ -59,13 +59,13 @@ namespace BlueUIFrame.Easy
                 {
                     uiStack.Peek().Hide(ui.GetLayer());
                 }
-                AddListener(ui,id, newHandler);
+                AddListener(ui,id.ToString(), newHandler);
                 newHandler.Show(ui);
                 uiStack.Push(newHandler);
             }
             else
             {
-                AddListener(ui,id, uiStack.Peek());
+                AddListener(ui,id.ToString(), uiStack.Peek());
                 uiStack.Peek().Show(ui);
             }
         }
@@ -75,7 +75,7 @@ namespace BlueUIFrame.Easy
         /// <param name="ui"></param>
         /// <param name="id"></param>
         /// <param name="handler"></param>
-        private void AddListener(AUIBase ui, EUiId id,UIHandler handler)
+        private void AddListener(AUIBase ui, string id,UIHandler handler)
         {
             handler.AddListener(ui, ob=>UIInitAction(id.ToString(),ob), isActive => UIActiveAction(id.ToString(), isActive));
         }
@@ -96,9 +96,9 @@ namespace BlueUIFrame.Easy
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        private Transform SpawnUI(EUiId id)
+        private Transform SpawnUI(string id)
         {
-            string path = UIPathManager.GetPath(id);
+            string path = AUIPathManager.GetPath(id);
             if (!string.IsNullOrEmpty(path))
             {
                 if (!prefabPool.ContainsKey(id) || prefabPool[id] == null)
