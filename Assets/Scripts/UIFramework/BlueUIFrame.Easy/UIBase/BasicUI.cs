@@ -4,7 +4,6 @@
 //=======================================================
 using System;
 using System.Reflection;
-using BlueUIFrame.Easy.Demo;
 using UnityEngine;
 
 namespace BlueUIFrame.Easy
